@@ -229,17 +229,21 @@ Use the same lubricant on all three towers so they all move with the same resist
 
 1. **Auto Home:** all three carriages rise and click their endstops.
 2. **Jog** each axis from the menu: the motion should be smooth, with no clicking or skipped steps.
-3. **Heat** the hotend to 200 °C: the temperature should climb steadily and hold, and the fans should kick in.
+3. **Heat** the hotend to 200 °C, but **turn the fans on first** (`M106 S255`, or the fan control in the menu). On the Magician the heatsink fan above the nozzle is on the switched fan output, so it doesn't start by itself when the hotend heats. The temperature should climb steadily and hold.
 4. **Extrude** 10–20 mm with the hotend hot: the extruder gear should turn smoothly.
 5. **"Air print":** slice a small test cube with the Z offset raised about 10 mm, so it prints in the air, and watch the whole run.
 
 **Calibration:**
 
-After my reassembly, homing worked, but one tower stopped **1–2 mm higher** than the others, and the head drifted to one side when moving down. That's expected after a teardown. To fix it:
+After my reassembly, homing worked, but one tower stopped **1–2 mm higher** than the others, and the head drifted to one side when moving down. That's expected after a teardown.
 
-- **Mechanically:** measure from each carriage to the top housing right after homing. If one carriage stops higher, turn its endstop-trigger screw (in the round boss) **out** slightly so it triggers sooner. (One turn moves it about 0.5 mm if it's an M3 screw.)
-- **In firmware:** run the printer's auto-leveling from the menu, then set the Z offset with a paper test at the bed center. Check the drag near each tower. Differences between towers are endstop offsets (`M666` in Marlin), and a dome or bowl shape is the delta radius (`M665`).
-- **Over USB:** see the [calibration notes](../calibration.md) for G-code steps, and for doing the whole calibration automatically with Klipper (`DELTA_CALIBRATE`).
+The stock firmware turned out to be **Smoothieware**, with **no probe** and **no SD card on the mainboard**. So there's no automatic leveling, and `M500` can't save settings. What worked:
+
+- **Optional, mechanical:** measure from each carriage to the top housing right after homing. If one carriage stops higher, turn its endstop-trigger screw (in the round boss) **out** slightly so it triggers sooner.
+- **Paper test over USB:** unplug the touchscreen's serial cable (otherwise USB commands are ignored), home, and find the light-drag height at the bed center and near each tower. Correct the towers with endstop trims (`M666`, values of 0 or below), then the delta radius (`M665 R`) if the center still differs, then the max height (`M665 Z`). Three rounds got all towers within 0.05 mm.
+- **Keep the values in your slicer's start G-code**, since they can't be saved on the printer. Put `M106 S255` first, then your `M665` and `M666` values, then `G28`.
+
+The full walkthrough, with test points, the order of corrections and a start G-code template, is in **[Reviving a BIQU Magician](../reviving-the-magician.md)**. The [calibration notes](../calibration.md) also cover the Klipper route.
 
 ---
 
