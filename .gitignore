@@ -1,0 +1,13 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Slicer output and temp files
+*.gcode.tmp
+*.bak
+*.tmp
+
+# Editor folders
+.vscode/
+.idea/
