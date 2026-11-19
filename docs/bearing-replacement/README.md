@@ -10,7 +10,7 @@ The BIQU Magician is a small delta 3D printer. I bought a used one with a carria
 
 So this guide documents what actually worked, including the parts that weren't obvious:
 
-- **The carriages use long LM8LUU bearings (8 × 15 × 45 mm), not standard LM8UU.** Two LM8UU end to end work as a substitute.
+- **The carriages use long LM8LUU bearings (8 × 15 × 45 mm), not standard LM8UU.** A single standard LM8UU per rod, centered in the bore, works as a stopgap.
 - **The rods come out through the top, not the bottom.** The top housing is only press-fit onto the rods. The bottom ends of the rods are screwed down from under the base, and those screws can't be reached without breaking the feet. **Don't try to remove the feet.**
 - **You don't need to remove the rods at all.** With the top housing off, the carriages slide off the top ends of the rods.
 
@@ -25,7 +25,7 @@ So this guide documents what actually worked, including the parts that weren't o
 | Item | Qty | Notes |
 |---|---|---|
 | LM8LUU linear bearings (8 × 15 × 45 mm) | 6 | The original part, best option |
-| **or** LM8UU linear bearings (8 × 15 × 24 mm) | 12 | Two per bore as a substitute (48 mm total, see Step 9) |
+| **or** LM8UU linear bearings (8 × 15 × 24 mm) | 6 | Stopgap: one per bore, centered (see Step 9) |
 | 8 mm smooth rod | as needed | Only if a rod is badly pitted; measure the length first |
 
 **Tools and supplies**
@@ -176,20 +176,25 @@ To remove a bearing:
 
 **Best option:** six new **LM8LUU** (8 × 15 × 45 mm), a direct replacement.
 
-**What I did:** I had already bought standard **LM8UU** (24 mm), so I used **two per bore, end to end**. That's 48 mm, about 3 mm longer than the original.
+**What I did:** I had already bought standard **LM8UU** (24 mm), so my printer ended up with a mix:
+
+- **Two carriages: one LM8UU per rod, centered in the bore.**
+- **One carriage: its original long bearings**, which still rolled smoothly after cleaning and packing with grease.
+
+I first tried **two LM8UU end to end** per bore. That's 48 mm, about 3 mm longer than the original, so they **stuck out of the carriage**, and the longer carriage felt draggier. One centered bearing per rod glided better.
 
 1. Clean rust flakes out of the bore.
-2. **Slide both new bearings onto a rod first**, butted together, to keep them aligned.
-3. Press them into the bore together, rod still inside, and **center them** so about 1.5 mm sticks out at each end.
+2. **Slide the new bearing onto a rod first**, to keep it aligned.
+3. Press it into the bore with the rod still inside, and **center it** along the bore's length.
 4. Slide the carriage along a rod. It should glide with even resistance.
 
-![Two LM8UU installed in one bore](images/26-two-lm8uu-installed.jpg)
+![A trial fit with two LM8UU end to end, which stuck out of the carriage](images/26-two-lm8uu-installed.jpg)
 
 **Things I noticed:**
 
-- **A carriage with two bearings per bore has more drag** than one with a single bearing per bore. That's normal: more seals rubbing.
-- **With the top housing off, the carriages bound near the free top ends of the rods.** Without the top, the rod ends aren't held parallel, and the longer double-bearing carriage binds. Test the glide again with the top housing installed.
-- **Short on bearings?** Clean and grease the old ones. One of my old long bearings rolled smoothly after cleaning, so I reused it in one bore. Pair a reused bearing with a smooth rod, not a pitted one.
+- **With the top housing off, the carriages bound near the free top ends of the rods.** Without the top, the rod ends aren't held parallel. Test the glide again with the top housing installed.
+- **Salvage the old bearings.** Clean them, soak them with penetrating oil and grease them. If one rolls smoothly on a rod, it's still usable. Pair a reused bearing with a smooth rod, not a pitted one.
+- **A single short bearing is a stopgap.** It holds the rod over 24 mm instead of 45 mm, so the carriage can rock very slightly, and towers with different bearings don't behave quite the same. My printer still printed true to size this way, but **six LM8LUU** are the proper fix for better print quality.
 
 ---
 

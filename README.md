@@ -6,7 +6,7 @@ Notes, photos and a small tool for reviving a second-hand **BIQU Magician** delt
 
 - **[Reviving a BIQU Magician](docs/reviving-the-magician.md)**: what's inside (with photos), why USB ignores commands and how to fix it, the missing SD card, calibrating the delta with a paper test over USB without a probe, a fan-wiring warning, and probe and Klipper notes.
 - **[Replacing the linear bearings](docs/bearing-replacement/README.md)**: rescuing a rusty Magician with seized carriages, step by step with photos ([PDF version](docs/bearing-replacement/biqu-magician-bearing-replacement.pdf)). Key findings:
-  - The carriages use **LM8LUU (8 × 15 × 45 mm)** bearings. Two LM8UU end to end work as a substitute.
+  - The carriages use **LM8LUU (8 × 15 × 45 mm)** bearings. A single LM8UU per rod, centered, works as a stopgap.
   - The top housing is **press-fit** on the rods and lifts straight off. Don't remove the feet.
 - **[Calibration notes](docs/calibration.md)**: recalibrating after reassembly, over USB with the stock firmware or with Klipper.
 
