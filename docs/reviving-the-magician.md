@@ -57,7 +57,7 @@ Marlin's `G33` doesn't exist in Smoothie. Smoothie's own `G32` needs a probe, an
 
 ![Paper test under the nozzle](images/paper-test.jpg)
 
-**Points.** Use the center plus the three towers at **30 mm** from center: front-left (X-26 Y-15), front-right (X26 Y-15), back (X0 Y30). Moves of 40 mm or more toward the back pushed our nozzle past the bed edge, and the arms grind there.
+**Points.** Use the center plus the three towers at **30 mm** from center: front-left (X-26 Y-15), front-right (X26 Y-15), back (X0 Y30). Moves of 40 mm or more toward the back made our arms grind, but that was **before calibration**, with the height about 13 mm off. Once calibrated, a test run (nozzle 8 mm above the bed, no filament) reached 47 mm from the center and came within 23 mm of a tower with no noise at all. The 30 mm points are still a good choice for the paper test: they stay away from the pitted bed rim.
 
 **Routine at each point.** Move sideways at a safe height, go down to about 2 mm above the expected bed, then step down 0.25 / 0.1 mm with a sheet of paper under the nozzle until light drag. Note Z and lift. Negative Z values are fine at this stage, since the height is fixed last.
 
@@ -155,6 +155,7 @@ Tips for small models:
 - **Check the real overhangs before slicing.** Cura's "3D Model Assistant" support warning is generic. For this figure the belly between the legs needed supports (the chin and frill did not), so tree supports touching only the bed were enough and snapped off easily.
 - **Details thinner than about 1 mm print as blobs** with a 0.4 mm nozzle. We printed the "smooth back" version of the model because the version with tiny back plates would have turned to strings at 40 mm.
 - **Check the size first.** The reach is about ±50 mm from the center and about 150 mm of height, so parts made for bigger printers often don't fit. A spool-holder base made "for the Magician" turned out to be 120 × 108 mm and 160 mm tall: it bolts onto the printer but can't be printed on it.
+- **Dry-run big parts first.** For a part that reaches near the edge (ours was a 76 × 49 mm plate), read the reach off the sliced G-code (the closest the nozzle gets to each tower, and the farthest point from the center), then trace the outline with the nozzle 8 mm above the bed and no filament, in three passes at 60%, 80% and 100% of the way out, listening for grinding. Rotating the part so its long side runs between two towers, and a 1 mm skirt instead of 3 mm, both gave a few extra millimetres of margin.
 - **Keep prints near the center** until the bed has a flat surface: the edges of our acrylic are pitted.
 
 ## Adding a probe
