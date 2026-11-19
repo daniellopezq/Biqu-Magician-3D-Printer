@@ -8,6 +8,7 @@ control lines drives the board's reset), which forgets homing. So one background
     python printer_link.py serve COM3 --baud 115200  # keep running in the background
     python printer_link.py send M119 M114            # each argument is one G-code line
     python printer_link.py send G28 M400 --timeout 120
+    python printer_link.py print COM3 cube.gcode     # stream a sliced file (stop "serve" first)
 
 For moves, follow them with M400 so the reply only comes back when the move has finished.
 Every line sent and received is appended to printer_log.txt next to this file.
@@ -163,6 +164,77 @@ def send(args):
     return 0
 
 
+STOP_FILE = Path(__file__).with_name("stop_print")
+
+
+def gcode_lines(path):
+    """Yield the commands of a G-code file with comments and blank lines removed."""
+    for raw in Path(path).read_text(encoding="utf-8", errors="replace").splitlines():
+        line = raw.split(";", 1)[0].strip()
+        if line:
+            yield line
+
+
+def temperature(ser):
+    reply, _ = command(ser, "M105", 10)
+    for line in reply:
+        if "T:" in line:
+            try:
+                return float(line.split("T:", 1)[1].split()[0])
+            except ValueError:
+                pass
+    return None
+
+
+def cool_down(ser, below):
+    """Keep the fans on until the hotend is below `below` °C, then turn them off.
+
+    On the Magician the heatsink fan shares the switched fan output, and closing the port
+    may reset the board (fans off), so the port stays open until the nozzle is cool."""
+    command(ser, "M106 S255", 10)
+    while True:
+        t = temperature(ser)
+        print(f"cooling: {t} °C", flush=True)
+        if t is not None and t < below:
+            break
+        time.sleep(15)
+    command(ser, "M107", 10)
+    print("fans off", flush=True)
+
+
+def print_file(args):
+    """Stream a G-code file line by line, waiting for 'ok' after each one."""
+    lines = list(gcode_lines(args.file))
+    STOP_FILE.unlink(missing_ok=True)
+    ser, banner = open_port(args.port, args.baud)
+    print("\n".join(banner))
+    print(f"printing {args.file}: {len(lines)} commands. Create {STOP_FILE} to stop.", flush=True)
+    start, stopped = time.time(), False
+    try:
+        for n, line in enumerate(lines, 1):
+            if STOP_FILE.exists():
+                stopped = True
+                print(f"stop requested at command {n}", flush=True)
+                for g in ("M104 S0", "M106 S255", "G91", "G1 Z10 F1500", "G90", "M400"):
+                    command(ser, g, 30)
+                break
+            reply, ok = command(ser, line, args.timeout)
+            if not ok or any(r.lower().startswith(("!!", "error")) for r in reply):
+                print(f"command {n} '{line}' failed: {reply}", flush=True)
+                command(ser, "M104 S0", 10)
+                stopped = True
+                break
+            if n % 200 == 0 or n == len(lines):
+                mins = (time.time() - start) / 60
+                print(f"{n}/{len(lines)} ({100 * n // len(lines)}%) {mins:.1f} min", flush=True)
+        print("stopped" if stopped else "print finished", flush=True)
+        cool_down(ser, args.cool_below)
+    finally:
+        STOP_FILE.unlink(missing_ok=True)
+        ser.close()
+    return 1 if stopped else 0
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -177,6 +249,13 @@ def main():
     a.add_argument("gcode", nargs="+")
     a.add_argument("--timeout", type=float, default=10)
     a.set_defaults(fn=send)
+    a = sub.add_parser("print", help="stream a G-code file (opens the port itself: stop 'serve' first)")
+    a.add_argument("port")
+    a.add_argument("file")
+    a.add_argument("--baud", type=int, default=115200)
+    a.add_argument("--timeout", type=float, default=300, help="seconds to wait for each 'ok' (M109 heats slowly)")
+    a.add_argument("--cool-below", type=float, default=50, help="keep fans on until the hotend is below this")
+    a.set_defaults(fn=print_file)
     args = p.parse_args()
     sys.exit(args.fn(args) or 0)
 
