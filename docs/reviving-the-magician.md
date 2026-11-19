@@ -95,9 +95,42 @@ Print from a computer over USB (OctoPrint, Pronterface, Cura) with the screen un
 
 **Without a host program**, `python tools/printer_link.py print COM3 file.gcode` streams a saved file line by line, then keeps the fans on until the nozzle is below 50 °C. Creating a file named `stop_print` next to the tool stops it cleanly (heater off, fans on, nozzle lifted). Use PLA only: the bed is unheated. Painter's tape, glue stick on glass, or a self-adhesive PEI sheet all work. After adding a bed surface, lower `M665 Z` by its thickness and redo the center paper check.
 
+**Cleaning the acrylic bed:** use warm water and dish soap. Avoid isopropyl alcohol and strong degreasers, which can cause fine cracks (crazing) in acrylic, especially around stressed spots like screw holes.
+
+## First print
+
+After the bearing replacement and the paper-test calibration, the first print was a **10 mm XYZ calibration cube** in gray PLA, on a thin layer of washable glue stick.
+
+![First print: 10 mm calibration cube on the bed](images/first-print-cube-on-bed.jpg)
+
+**Slicer settings that worked:**
+
+| Setting | Value |
+|---|---|
+| Printer | Delta, round bed about 100 mm across, origin at the center |
+| Nozzle / filament | 0.4 mm / 1.75 mm PLA |
+| Layer height | 0.2 mm |
+| Temperature | 210 °C (215 °C first layer) |
+| Bed temperature | 0 (unheated, so the slicer doesn't wait for a bed) |
+| Fan | 100% from the first layer |
+| Retraction | 3–4 mm (bowden) |
+| Adhesion | 2-loop skirt to prime the nozzle |
+
+**Result:** it stuck well, the skirt came out as one even line, and the walls and the embossed X and Y letters are clean. All three axes measured the same, close to 10 mm, measured with a ruler and photos (calipers will give a finer number). Only the top "Z" is messy. That's typical of a 10 mm cube, where each top layer takes a few seconds and doesn't cool before the next. Setting a **minimum layer time of about 10 seconds** in the slicer helps with small parts.
+
+![Y face against a ruler](images/first-print-cube-y-face.jpg)
+![Top, with the Z letter](images/first-print-cube-z-top.jpg)
+![X face against a ruler](images/first-print-cube-x-face.jpg)
+
+> **Don't print downloaded G-code.** G-code only works on the printer it was sliced for. Files made for other printers (for example a Prusa MK3S) move far outside the Magician's ±50 mm reach from the bed center, wait for a heated bed it doesn't have, and use fan settings that are unsafe here. Always slice the model file (STL) with your own settings.
+
 ## Adding a probe
 
 The firmware's probe module is enabled (`M670`, `M557` points at 40 mm, `M565 Z-0.10`, and `M119` shows `Probe: 0`), but we haven't yet found which board connector it reads. A simple **lever microswitch** (3D-printer "endstop" module) on the nozzle block is the cheapest option that works without changing firmware settings. **Inductive sensors won't work** on the acrylic bed, and **BLTouch needs config changes**, which need an SD card. To find the probe input, watch `M119` while bridging only the **signal and ground** pins of one endstop connector at a time. Never bridge the 5V pin.
+
+There's also a loose **3-pin connector on the nozzle block's cable bundle** that may be the factory probe plug. That's unverified, so check its pins with a multimeter and the `M119` test before plugging anything into it.
+
+**Planned switch:** a subminiature **lever microswitch with three terminals (C, NO, NC)**, such as Steren's SS0505A. Wire C to ground and NO or NC to the signal pin, depending on what the `M119` test shows the firmware expects. On a delta, the probe has to be removable, or retract above the nozzle, so it doesn't drag on prints. Its X/Y/Z offset from the nozzle can be set with `M565` in the start G-code.
 
 ## Klipper?
 
