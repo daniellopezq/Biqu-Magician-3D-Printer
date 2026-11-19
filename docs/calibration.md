@@ -4,7 +4,7 @@ After replacing bearings, or anything else that changes the towers, a delta prin
 
 > **Safety:** stay at the printer with a hand near the power switch whenever it moves under computer control. Start with the nozzle well above the bed and lower it in small steps.
 
-> **What we found on a stock unit** (details in [Reviving a BIQU Magician](reviving-the-magician.md)): the stock firmware is **Smoothieware, not Marlin**. The USB chip is a **CP2102** (Silicon Labs CP210x driver) at **115200** baud. **USB ignores commands until the touchscreen's serial cable is unplugged.** `G33` doesn't exist in Smoothie, and `G32` needs a probe the Magician doesn't have. **`M500` can't save** without an SD card on the mainboard. `M666` trims must be ≤ 0. The steps below still apply, with those differences.
+> **What we found on a stock unit** (details in [Reviving a BIQU Magician](reviving-the-magician.md)): the stock firmware is **Smoothieware, not Marlin**. The USB chip is a **CP2102** (Silicon Labs CP210x driver) at **115200** baud. **USB ignores commands until the touchscreen's serial cable is unplugged.** `G33` doesn't exist in Smoothie, and `G32` needs a probe switch (the plug for one is there, the switch isn't; see [Adding a probe](reviving-the-magician.md#adding-a-probe)). **`M500` can't save** without an SD card on the mainboard. `M666` trims must be ≤ 0. The steps below still apply, with those differences.
 
 ## Connecting over USB
 
