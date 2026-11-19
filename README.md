@@ -30,7 +30,11 @@ Unplug the touchscreen's serial cable first, or the printer will ignore USB comm
 
 ## Status
 
-The bearing replacement is done and the printer homes and moves. It has been calibrated over USB with the stock firmware (paper test), the extruder steps/mm checked, and a 10 mm calibration cube printed in PLA over USB (sliced in Cura, glue stick on the acrylic bed) came out true to size with sharp letters. Next: a glass or PEI bed surface, then possibly Klipper.
+**It prints.** The bearing replacement is done, the printer has been calibrated over USB with the stock firmware (paper test), and the extruder steps/mm are checked. The first print, a 10 mm calibration cube in PLA over USB (sliced in Cura, glue stick on the acrylic bed), came out true to size with sharp letters ([details and settings](docs/reviving-the-magician.md#first-print)).
+
+<img src="docs/images/first-print-cube-on-bed.jpg" alt="First print: 10 mm calibration cube" width="320">
+
+Next: a glass or PEI bed surface, a microswitch probe and mount, a spool holder, and possibly Klipper.
 
 ## License
 
