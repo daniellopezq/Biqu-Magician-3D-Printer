@@ -19,6 +19,7 @@ __pycache__/
 # Serial session log
 tools/printer_log.txt
 tools/stop_print
+tools/fan_full
 
 # Local to our own printer, not shared: calibration log, settings backups, shopping list
 backups/

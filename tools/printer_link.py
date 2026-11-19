@@ -9,12 +9,16 @@ control lines drives the board's reset), which forgets homing. So one background
     python printer_link.py send M119 M114            # each argument is one G-code line
     python printer_link.py send G28 M400 --timeout 120
     python printer_link.py print COM3 cube.gcode     # stream a sliced file (stop "serve" first)
+    python printer_link.py print COM3 cube.gcode --telemetry temps.csv   # also log hotend temperature
+    # while printing: create a file named "stop_print" next to this script to stop cleanly,
+    # or "fan_full" to force the fans to 100% (later slicer fan commands below 100% are ignored)
 
 For moves, follow them with M400 so the reply only comes back when the move has finished.
 Every line sent and received is appended to printer_log.txt next to this file.
 """
 
 import argparse
+import re
 import socket
 import sys
 import time
@@ -59,8 +63,10 @@ def is_unsolicited_temp(line, gcode):
     return line.startswith("ok T:") and not gcode.upper().startswith("M105")
 
 
-def command(ser, gcode, timeout):
-    """Send one line and collect replies until 'ok'. 'busy' messages extend the wait."""
+def command(ser, gcode, timeout, on_line=None):
+    """Send one line and collect replies until 'ok'. 'busy' messages extend the wait.
+
+    `on_line`, if given, is called with every received line (used for temperature logging)."""
     ser.reset_input_buffer()
     ser.write((gcode.strip() + "\n").encode())
     log(">", gcode)
@@ -71,6 +77,8 @@ def command(ser, gcode, timeout):
             continue
         line = raw.decode("utf-8", "replace").rstrip()
         log("<", line)
+        if on_line:
+            on_line(line)
         if is_unsolicited_temp(line, gcode):
             continue
         lines.append(line)
@@ -165,18 +173,60 @@ def send(args):
 
 
 STOP_FILE = Path(__file__).with_name("stop_print")
+FAN_FILE = Path(__file__).with_name("fan_full")
 
 
-def gcode_lines(path):
-    """Yield the commands of a G-code file with comments and blank lines removed."""
+def gcode_commands(path):
+    """Return [(command, layer)] for a G-code file: comments and blank lines removed, and the
+    layer number taken from Cura-style ';LAYER:n' comments (-1 before the first layer)."""
+    out, layer = [], -1
     for raw in Path(path).read_text(encoding="utf-8", errors="replace").splitlines():
+        if raw.startswith(";LAYER:"):
+            try:
+                layer = int(raw[7:])
+            except ValueError:
+                pass
         line = raw.split(";", 1)[0].strip()
         if line:
-            yield line
+            out.append((line, layer))
+    return out
 
 
-def temperature(ser):
-    reply, _ = command(ser, "M105", 10)
+TEMP_RE = re.compile(r"T:\s*([\d.]+)\s*/\s*([\d.]+)\s*@\s*(\d+)")
+
+
+class Telemetry:
+    """Write hotend temperature, target and heater power to a CSV while printing.
+
+    Smoothie reports 'T:200.1 /200.0 @131' once a second while M109 waits, and on every M105,
+    so the heat-up is logged at 1 s resolution and the print itself every `interval` seconds."""
+
+    def __init__(self, path, interval, total):
+        self.f = open(path, "w", encoding="utf-8")
+        self.f.write("elapsed_s,command,of,layer,temp_c,target_c,power\n")
+        self.interval, self.total = interval, total
+        self.start, self.last, self.n, self.layer = time.time(), 0.0, 0, -1
+
+    def mark(self, n, layer):
+        self.n, self.layer = n, layer
+
+    def on_line(self, line):
+        m = TEMP_RE.search(line)
+        if m:
+            t = time.time() - self.start
+            self.f.write(f"{t:.1f},{self.n},{self.total},{self.layer},{m.group(1)},{m.group(2)},{m.group(3)}\n")
+            self.f.flush()
+            self.last = t
+
+    def due(self):
+        return time.time() - self.start - self.last >= self.interval
+
+    def close(self):
+        self.f.close()
+
+
+def temperature(ser, on_line=None):
+    reply, _ = command(ser, "M105", 10, on_line)
     for line in reply:
         if "T:" in line:
             try:
@@ -186,14 +236,14 @@ def temperature(ser):
     return None
 
 
-def cool_down(ser, below):
+def cool_down(ser, below, on_line=None):
     """Keep the fans on until the hotend is below `below` °C, then turn them off.
 
     On the Magician the heatsink fan shares the switched fan output, and closing the port
     may reset the board (fans off), so the port stays open until the nozzle is cool."""
     command(ser, "M106 S255", 10)
     while True:
-        t = temperature(ser)
+        t = temperature(ser, on_line)
         print(f"cooling: {t} °C", flush=True)
         if t is not None and t < below:
             break
@@ -204,21 +254,39 @@ def cool_down(ser, below):
 
 def print_file(args):
     """Stream a G-code file line by line, waiting for 'ok' after each one."""
-    lines = list(gcode_lines(args.file))
+    cmds = gcode_commands(args.file)
+    lines = [c for c, _ in cmds]
     STOP_FILE.unlink(missing_ok=True)
     ser, banner = open_port(args.port, args.baud)
     print("\n".join(banner))
     print(f"printing {args.file}: {len(lines)} commands. Create {STOP_FILE} to stop.", flush=True)
-    start, stopped = time.time(), False
+    tele = Telemetry(args.telemetry, args.interval, len(lines)) if args.telemetry else None
+    on_line = tele.on_line if tele else None
+    start, stopped, fans_locked = time.time(), False, False
+    FAN_FILE.unlink(missing_ok=True)
     try:
-        for n, line in enumerate(lines, 1):
+        for n, (line, layer) in enumerate(cmds, 1):
+            if tele:
+                tele.mark(n, layer)
+                if tele.due() and not line.upper().startswith("M109"):
+                    command(ser, "M105", 10, on_line)  # periodic sample between commands
+            if FAN_FILE.exists():
+                # Live override: fans to 100% now, and ignore later slicer commands that lower them.
+                FAN_FILE.unlink(missing_ok=True)
+                fans_locked = True
+                command(ser, "M106 S255", 10, on_line)
+                print(f"fans forced to 100% at command {n} (fan_full file)", flush=True)
+            if fans_locked:
+                m = re.match(r"M106\s+S(\d+)", line.upper())
+                if m and int(m.group(1)) < 255:
+                    continue
             if STOP_FILE.exists():
                 stopped = True
                 print(f"stop requested at command {n}", flush=True)
                 for g in ("M104 S0", "M106 S255", "G91", "G1 Z10 F1500", "G90", "M400"):
                     command(ser, g, 30)
                 break
-            reply, ok = command(ser, line, args.timeout)
+            reply, ok = command(ser, line, args.timeout, on_line)
             if not ok or any(r.lower().startswith(("!!", "error")) for r in reply):
                 print(f"command {n} '{line}' failed: {reply}", flush=True)
                 command(ser, "M104 S0", 10)
@@ -228,9 +296,11 @@ def print_file(args):
                 mins = (time.time() - start) / 60
                 print(f"{n}/{len(lines)} ({100 * n // len(lines)}%) {mins:.1f} min", flush=True)
         print("stopped" if stopped else "print finished", flush=True)
-        cool_down(ser, args.cool_below)
+        cool_down(ser, args.cool_below, on_line)
     finally:
         STOP_FILE.unlink(missing_ok=True)
+        if tele:
+            tele.close()
         ser.close()
     return 1 if stopped else 0
 
@@ -255,6 +325,8 @@ def main():
     a.add_argument("--baud", type=int, default=115200)
     a.add_argument("--timeout", type=float, default=300, help="seconds to wait for each 'ok' (M109 heats slowly)")
     a.add_argument("--cool-below", type=float, default=50, help="keep fans on until the hotend is below this")
+    a.add_argument("--telemetry", help="write hotend temperature, target and heater power to this CSV")
+    a.add_argument("--interval", type=float, default=10, help="seconds between temperature samples while printing")
     a.set_defaults(fn=print_file)
     args = p.parse_args()
     sys.exit(args.fn(args) or 0)
