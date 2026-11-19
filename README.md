@@ -1,6 +1,6 @@
 # BIQU Magician 3D Printer
 
-Notes, photos and a small tool for reviving a second-hand **BIQU Magician** delta 3D printer: stock Smoothieware on an LPC1768 board, a BIGTREETECH 2.8" touchscreen, and no probe.
+Notes, photos and a small tool for reviving a second-hand **BIQU Magician** delta 3D printer: stock Smoothieware on an LPC1768 board, a BIGTREETECH 2.8" touchscreen, and no probe switch fitted (the plug for one is there).
 
 ## Guides
 
@@ -34,7 +34,9 @@ Unplug the touchscreen's serial cable first, or the printer will ignore USB comm
 
 <img src="docs/images/first-print-cube-on-bed.jpg" alt="First print: 10 mm calibration cube" width="320">
 
-Next: a glass or PEI bed surface, a microswitch probe and mount, a spool holder, and possibly Klipper.
+A second print, a 40 mm figure with tree supports, also came out fine ([settings](docs/reviving-the-magician.md#second-print-a-small-figure-with-supports)). The probe wiring is already on the board: the plug by the nozzle block is the probe input, so a normally-open lever microswitch on it should work with the stock firmware ([how we found it](docs/reviving-the-magician.md#adding-a-probe)). `config-get` also gave the full stock pin map for a later Klipper config.
+
+Next: a glass bed surface, a removable microswitch probe and mount, and possibly Klipper.
 
 ## License
 

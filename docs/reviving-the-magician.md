@@ -14,7 +14,7 @@ Notes from bringing a second-hand BIQU Magician delta printer back to life: what
 | Touchscreen | **BIGTREETECH 2.8" TFT**, board **BQ112-A4**: a separate controller talking to the mainboard over serial |
 | Extruder | Titan-style geared bowden extruder, `M92 E395` |
 | Bed | Round acrylic plate, about **100 mm** across, unheated, screwed flat to the base (no leveling springs) |
-| Probe | **None**, although the firmware's probe module is enabled |
+| Probe | **No switch fitted**, but the firmware's probe module is enabled and the wiring plug is there ([details](#adding-a-probe)) |
 
 ![Mainboard with the LPC1768](images/mainboard-lpc1768.jpg)
 ![Board marking BQ111-A6](images/mainboard-bq111-a6-label.jpg)
@@ -78,6 +78,17 @@ On our unit **all three fans, including the heatsink fan above the nozzle, are o
 - slicer fan: 100% from the first layer, minimum 100%, no "fan off for the first layers" option;
 - after a print, leave the fans on until the hotend is below 50 °C, then `M107`.
 
+## Checking the extruder steps/mm
+
+The stock `M92 E395` can be a few percent off. Test it hot, with filament loaded:
+
+1. Mark the filament **50 mm** above the extruder's filament guide (a ruler and a marker are enough).
+2. Extrude slowly: `M83`, then `G1 E40 F60` (40 mm at 1 mm/s).
+3. Measure from the guide to the mark again. The extruder should have pulled in exactly 40 mm, so the mark should now be 10 mm above the guide.
+4. New value = old value × 40 ÷ (50 − measured). On our unit the mark ended up 11 mm above the guide (39 mm fed), which gives 395 × 40 ÷ 39 ≈ **405**. A ruler is good to about ±1%, so a 100 mm feed gives a finer number.
+
+Put the result in the start G-code (`M92 E...`), since `M500` can't save it.
+
 ## Start G-code template
 
 Fill in your own calibrated values:
@@ -86,6 +97,7 @@ Fill in your own calibrated values:
 M106 S255                  ; fans on first (heatsink fan shares this output)
 M665 L146.03 R61.7 Z<your max height>
 M666 X<trim> Y<trim> Z<trim>
+M92 E<your measured value>  ; extruder steps/mm (stock 395)
 G28
 ```
 
@@ -93,7 +105,9 @@ Print from a computer over USB (OctoPrint, Pronterface, Cura) with the screen un
 
 **Cura notes.** There's no Magician profile: add a *Custom FFF printer* with a 100 × 100 mm **elliptic** bed, **origin at center**, no heated bed, G-code flavor **Marlin** (Smoothie accepts it), and set the extruder's **material diameter to 1.75** (it defaults to 2.85). Cura puts its own `M107` (fans off) just before your end G-code, so start the end G-code with `M106 S255` to keep the heatsink fan running while the nozzle cools. Recent Cura versions also hide USB printing: tick **Preferences → General → Enable USB-cable printing** and restart Cura, otherwise you only get "Save to Disk". Keep Cura open until the nozzle has cooled, because disconnecting can reset the board and stop the fans.
 
-**Without a host program**, `python tools/printer_link.py print COM3 file.gcode` streams a saved file line by line, then keeps the fans on until the nozzle is below 50 °C. Creating a file named `stop_print` next to the tool stops it cleanly (heater off, fans on, nozzle lifted). Use PLA only: the bed is unheated. Painter's tape, glue stick on glass, or a self-adhesive PEI sheet all work. After adding a bed surface, lower `M665 Z` by its thickness and redo the center paper check.
+**Without a host program**, `python tools/printer_link.py print COM3 file.gcode` streams a saved file line by line, then keeps the fans on until the nozzle is below 50 °C. Creating a file named `stop_print` next to the tool stops it cleanly (heater off, fans on, nozzle lifted).
+
+Use PLA only: the bed is unheated. Painter's tape, glue stick on glass, or a self-adhesive PEI sheet all work. After adding a bed surface, lower `M665 Z` by its thickness and redo the center paper check.
 
 **Cleaning the acrylic bed:** use warm water and dish soap. Avoid isopropyl alcohol and strong degreasers, which can cause fine cracks (crazing) in acrylic, especially around stressed spots like screw holes.
 
@@ -124,6 +138,25 @@ After the bearing replacement and the paper-test calibration, the first print wa
 
 > **Don't print downloaded G-code.** G-code only works on the printer it was sliced for. Files made for other printers (for example a Prusa MK3S) move far outside the Magician's ±50 mm reach from the bed center, wait for a heated bed it doesn't have, and use fan settings that are unsafe here. Always slice the model file (STL) with your own settings.
 
+## Second print: a small figure with supports
+
+A 40 mm figure (a "cute triceratops" model scaled to 40 mm long) printed fine in PLA over USB from Cura on glue stick, about 40 minutes including supports. Settings used, on top of the cube settings above:
+
+| Setting | Value |
+|---|---|
+| Layer height | 0.16 mm (first layer 0.3 mm) |
+| Temperature | 200 °C |
+| Speed | 30 mm/s, first layer 15 mm/s (Cura slows the walls down by itself) |
+| Supports | **Tree**, placement **touching build plate**, overhang angle 50°, tip diameter 0.8 mm |
+| Fan | 100% from the first layer |
+| Infill | 15% |
+
+Tips for small models:
+- **Check the real overhangs before slicing.** Cura's "3D Model Assistant" support warning is generic. For this figure the belly between the legs needed supports (the chin and frill did not), so tree supports touching only the bed were enough and snapped off easily.
+- **Details thinner than about 1 mm print as blobs** with a 0.4 mm nozzle. We printed the "smooth back" version of the model because the version with tiny back plates would have turned to strings at 40 mm.
+- **Check the size first.** The reach is about ±50 mm from the center and about 150 mm of height, so parts made for bigger printers often don't fit. A spool-holder base made "for the Magician" turned out to be 120 × 108 mm and 160 mm tall: it bolts onto the printer but can't be printed on it.
+- **Keep prints near the center** until the bed has a flat surface: the edges of our acrylic are pitted.
+
 ## Adding a probe
 
 The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the probe wiring is already there**: a loose **2-pin plug next to the nozzle block** (about 3.3 V across its pins with the printer on). Bridging its two pins flips `M119` to `Probe: 1`. Only the switch itself is missing.
@@ -135,9 +168,11 @@ The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the prob
 
 **Reading the stock config without an SD card:** Smoothie's `config-get <setting>` answers over USB with the value built into the firmware (for example `config-get zprobe.probe_pin`, `config-get alpha_step_pin`). It prints a `cached:` line and no `ok`. On our unit: steppers step P2.0–P2.3, endstops P1.25/P1.27/P1.29 (max, homing up), heater P2.7, thermistor P0.24 (EPCOS 100K), fan P2.4, probe P1.28. That's the pin map a Klipper config needs.
 
-There's also a loose **3-pin connector on the nozzle block's cable bundle** that may be the factory probe plug. That's unverified, so check its pins with a multimeter and the `M119` test before plugging anything into it.
+![The loose probe plug hanging by the nozzle block](images/probe-plug-by-nozzle-block.jpg)
 
-**Planned switch:** a subminiature **lever microswitch with three terminals (C, NO, NC)**, such as Steren's SS0505A. Wire C to ground and NO or NC to the signal pin, depending on what the `M119` test shows the firmware expects. On a delta, the probe has to be removable, or retract above the nozzle, so it doesn't drag on prints. Its X/Y/Z offset from the nozzle can be set with `M565` in the start G-code.
+**How we confirmed the plug:** with the printer on, a multimeter showed 3.3 V across its two pins, which is the pulled-up signal against ground, so shorting them is safe. While watching `M119` (it only reads, nothing moves), touching a paper clip across the two pins flipped `Probe: 0` to `Probe: 1`. Don't short anything on a connector with three or more pins until you know which pin is 5 V.
+
+**Planned switch:** a subminiature **lever microswitch with three terminals (C, NO, NC)**, such as Steren's SS0505A. Wire **C and NO** to the plug (a plain switch has no polarity). On a delta, the probe has to be removable, or retract above the nozzle, so it doesn't drag on prints. Its X/Y/Z offset from the nozzle can be set with `M565` in the start G-code.
 
 ## Klipper?
 
