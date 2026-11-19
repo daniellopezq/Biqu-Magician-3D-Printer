@@ -126,7 +126,14 @@ After the bearing replacement and the paper-test calibration, the first print wa
 
 ## Adding a probe
 
-The firmware's probe module is enabled (`M670`, `M557` points at 40 mm, `M565 Z-0.10`, and `M119` shows `Probe: 0`), but we haven't yet found which board connector it reads. A simple **lever microswitch** (3D-printer "endstop" module) on the nozzle block is the cheapest option that works without changing firmware settings. **Inductive sensors won't work** on the acrylic bed, and **BLTouch needs config changes**, which need an SD card. To find the probe input, watch `M119` while bridging only the **signal and ground** pins of one endstop connector at a time. Never bridge the 5V pin.
+The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the probe wiring is already there**: a loose **2-pin plug next to the nozzle block** (about 3.3 V across its pins with the printer on). Bridging its two pins flips `M119` to `Probe: 1`. Only the switch itself is missing.
+
+- The firmware reads the probe on **P1.28, inverted with pull-up** (`1.28!^`), so it expects a switch that is **open at rest and closes when pressed**. Wire a lever microswitch's **C and NO** terminals to the plug, **not NC**, or the probe reads "triggered" all the time. The setting can't be changed without an SD card.
+- A probe that sits below the nozzle would drag across prints, so make it **removable** (clip or magnet on the nozzle block) and take it off before printing.
+- The stock leveling mode is **three-point leveling**: `G32` probes three points and compensates for bed tilt; it does **not** calculate tower trims or delta radius. `G30` (a single probe) works for checking heights at the towers.
+- **Inductive sensors won't work** on the acrylic bed, and **BLTouch needs config changes**, which need an SD card.
+
+**Reading the stock config without an SD card:** Smoothie's `config-get <setting>` answers over USB with the value built into the firmware (for example `config-get zprobe.probe_pin`, `config-get alpha_step_pin`). It prints a `cached:` line and no `ok`. On our unit: steppers step P2.0–P2.3, endstops P1.25/P1.27/P1.29 (max, homing up), heater P2.7, thermistor P0.24 (EPCOS 100K), fan P2.4, probe P1.28. That's the pin map a Klipper config needs.
 
 There's also a loose **3-pin connector on the nozzle block's cable bundle** that may be the factory probe plug. That's unverified, so check its pins with a multimeter and the `M119` test before plugging anything into it.
 
