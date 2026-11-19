@@ -14,7 +14,7 @@ Notes, photos and a small tool for reviving a second-hand **BIQU Magician** delt
 
 - `docs/`: guides, setup, calibration and maintenance notes
   - [`docs/images/`](docs/images/): photos of the board, screen, extruder, bed and SD slot
-- [`tools/printer_link.py`](tools/printer_link.py): keeps one USB serial connection open (so the board isn't reset between commands) and sends G-code from the command line. Needs Python 3 and `pyserial`.
+- [`tools/printer_link.py`](tools/printer_link.py): keeps one USB serial connection open (so the board isn't reset between commands) and sends G-code from the command line. It can also print a sliced G-code file. Needs Python 3 and `pyserial`.
 - Planned: `firmware/` (firmware builds and configuration), `slicer-profiles/` (slicer settings), `models/` (printable parts and upgrades)
 
 ## Quick start (USB)
@@ -30,7 +30,7 @@ Unplug the touchscreen's serial cable first, or the printer will ignore USB comm
 
 ## Status
 
-The bearing replacement is done and the printer homes and moves. It has been calibrated over USB with the stock firmware (paper test), and heating, fans and the extruder motor are tested. Next: first test print, then possibly Klipper.
+The bearing replacement is done and the printer homes and moves. It has been calibrated over USB with the stock firmware (paper test), the extruder steps/mm checked, and a 10 mm calibration cube printed in PLA over USB (sliced in Cura, glue stick on the acrylic bed) came out true to size with sharp letters. Next: a glass or PEI bed surface, then possibly Klipper.
 
 ## License
 
