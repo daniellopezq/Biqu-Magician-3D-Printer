@@ -245,6 +245,27 @@ The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the prob
 ![Ruler at the bottom of the roller, for the height below the nozzle](images/probe-height-ruler.jpg)
 ![The whole printer with the temporary probe fitted](images/probe-mounted-overview.jpg)
 
+### Probe remounted closer to the nozzle
+
+The switch was moved up next to the nozzle block. Rough ruler-photo estimates:
+- Roller contact point about **9–10 mm below the nozzle tip** (was about 13–15 mm).
+- About **20 mm sideways** from the nozzle.
+
+Photos can't give Klipper's X/Y offsets reliably: perspective distorts them, and they don't show which way the probe points relative to the printer's axes. **Measure them on the printer:**
+
+1. Put a strip of masking tape on the glass near the center and mark a small dot.
+2. `G28`, move down to about Z 1, and jog until the **nozzle tip is exactly over the dot**. Note **X1, Y1** (Mainsail or `GET_POSITION`).
+3. Raise to about Z 15, then jog until the **roller's contact point is over the dot**, lowering slowly until it just touches. Note **X2, Y2**.
+4. **`x_offset = X1 − X2`**, **`y_offset = Y1 − Y2`**. Example: nozzle over the dot at (0, 0) and roller over it at (0, 20) gives `x_offset: 0`, `y_offset: -20`.
+5. Put the values in `[probe]` and restart Klipper.
+6. **Z offset:** `PROBE_CALIBRATE` with the glass clamped in, paper test at the end (`TESTZ` until light drag, then `ACCEPT`), and `SAVE_CONFIG`.
+7. Keep **`horizontal_move_z` at 15 or more**, so the hanging roller clears the glass and the clamps between probe points. Then run `DELTA_CALIBRATE` and reprint the 10 mm cube.
+
+![Remounted probe, front view against a ruler](images/probe-remount-front-ruler.jpg)
+![Remounted probe, side view against a ruler](images/probe-remount-side-ruler.jpg)
+![Roller lever next to the nozzle](images/probe-remount-lever.jpg)
+![Angled view: the blue zip-tie tail still needs trimming](images/probe-remount-angle-ruler.jpg)
+
 **Before moving the printer: trim the zip-tie tails.** Long tails sticking out of the nozzle block can catch the arms, belts or rods as the head moves.
 
 ## Klipper?
