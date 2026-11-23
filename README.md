@@ -15,7 +15,8 @@ Notes, photos and a small tool for reviving a second-hand **BIQU Magician** delt
 - `docs/`: guides, setup, calibration and maintenance notes
   - [`docs/images/`](docs/images/): photos of the board, screen, extruder, bed and SD slot
 - [`tools/printer_link.py`](tools/printer_link.py): keeps one USB serial connection open (so the board isn't reset between commands) and sends G-code from the command line. It can also print a sliced G-code file. Needs Python 3 and `pyserial`.
-- Planned: `firmware/` (firmware builds and configuration), `slicer-profiles/` (slicer settings), `models/` (printable parts and upgrades)
+- [`models/calibration-cube/`](models/calibration-cube/README.md): the 10 mm reference cube (file fingerprint, settings and results) for comparing stock Smoothieware with Klipper later.
+- Planned: `firmware/` (firmware builds and configuration), `slicer-profiles/` (slicer settings), more `models/` (printable parts and upgrades)
 
 ## Quick start (USB)
 
