@@ -173,15 +173,43 @@ The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the prob
 
 **How we confirmed the plug:** with the printer on, a multimeter showed 3.3 V across its two pins, which is the pulled-up signal against ground, so shorting them is safe. While watching `M119` (it only reads, nothing moves), touching a paper clip across the two pins flipped `Probe: 0` to `Probe: 1`. Don't short anything on a connector with three or more pins until you know which pin is 5 V.
 
-**Planned switch:** a subminiature **lever microswitch with three terminals (C, NO, NC)**, such as Steren's SS0505A. Wire **C and NO** to the plug (a plain switch has no polarity). On a delta, the probe has to be removable, or retract above the nozzle, so it doesn't drag on prints. Its X/Y/Z offset from the nozzle can be set with `M565` in the start G-code.
+**Planned switch:** a subminiature **lever microswitch with three terminals (C, NO, NC)**, such as Steren's SS0505A. Wire **C and NO** to the plug (a plain switch has no polarity). Under Klipper, **C and NC** is the safer choice: invert the pin with `!` in `printer.cfg`, and a broken wire then reads as "triggered" instead of letting the nozzle crash. On a delta, the probe has to be removable, or retract above the nozzle, so it doesn't drag on prints. Its X/Y/Z offset from the nozzle can be set with `M565` in the start G-code.
 
 ## Klipper?
 
-The LPC1768 is supported by Klipper. Without a mainboard SD card, flashing would go through the chip's built-in serial bootloader (ISP) or SWD:
+The LPC1768 is supported by Klipper. Without a mainboard SD card, flashing goes through the chip's built-in serial bootloader (ISP) or its SWD debug port. A Linux host is needed, and the stock touchscreen no longer works afterward.
 
-- A read-only test showed **the CP2102's control lines reset the board but are not wired to the ISP pin (P2.10)**, so ISP can't be entered from USB alone.
-- There's an unidentified 2-pin header next to the MCU that might be an ISP jumper. **Unverified: don't bridge it until you've confirmed what it is.**
-- Klipper would also need a Linux host, and the stock touchscreen would no longer work.
+### Board details for flashing (BQ111-A6)
+
+| Part | What it is | Status |
+|---|---|---|
+| **J11 "BOOT"** (2-pin, next to the LPC) | The **ISP jumper**. Bridged at power-up, the LPC starts its ROM bootloader on UART0, which is reached through the CP2102 USB port. | **Confirmed**: with it bridged, the board answered `lpc21isp` and a full flash read worked. |
+| **J19** (3-pin, between "+3.3V" and "+5V" labels, next to AUX-1) | A voltage selector by AUX-1 (J14: 5V / GND / TX / RX, the touchscreen serial port). | **The USB serial port disappears when its cap is removed.** The factory position wasn't recorded. Test the middle pin + **+3.3V side** (toward the AMS1117 regulator) first, then middle + +5V if the port doesn't appear. **Record the working position here.** |
+| **Crystal** (small silver SMD part near the LPC) | Marked **12.000 MHz** (the first digit is faint). | Consistent with stock Smoothie and the 115200 baud working. Klipper's LPC176x build needs 12 MHz. |
+| **Debug header** (labels RST, TCK, TMS, pin 1 marked) | **JTAG/SWD**: TMS = SWDIO, TCK = SWCLK, RST = reset. The other pins are probably GND and 3.3V. | Found, not yet used. A Raspberry Pi Pico running "debugprobe" firmware plus OpenOCD (`interface/cmsis-dap.cfg`, `target/lpc17xx.cfg`) can read and write the whole flash. **Share GND only; don't power the board from the Pico.** |
+| **"− E0 +"** green terminal | Hotend heater output (MOSFET-switched). | The heater cartridge has no polarity. The **power input** terminal does, so don't mix them up. |
+
+![BOOT jumper J11 next to the LPC1768](images/board-boot-jumper-j11.jpg)
+![J19 between the +3.3V and +5V labels, next to AUX-1 (J14) and BOOT (J11)](images/board-j19-aux1-boot-labels.jpg)
+![J19 with a cap fitted, and the "− E0 +" heater terminal](images/board-j19-cap-and-e0-terminal.jpg)
+![The 12.000 MHz crystal near the LPC](images/board-crystal-12mhz.jpg)
+![JTAG/SWD header: RST, TCK, TMS](images/board-swd-jtag-header.jpg)
+
+### Stock firmware backup over ISP
+
+- A full 512 KB read over ISP, done twice with identical results, showed that **Code Read Protection is off**.
+- From **0x4000** on, the image is the complete Smoothie firmware: stack pointer 0x10008000, valid vectors, ending around 382 KB.
+- **0x0000–0x3FFF read back as zeros**, except the first 8 bytes, which are the boot ROM's own vectors (`10001ffc 1fff0081`).
+  - Likely explanation: in ISP mode the LPC17xx maps the boot ROM vectors over the **first 64 bytes**, so only those are hidden. The zeros after that would then be real, meaning no SD bootloader was ever installed (the board has no SD slot), just a vector table at 0x0 that starts the firmware at 0x4000.
+  - This is unverified. An **SWD read** settles it and gives an exact copy.
+- **Restore plan:** write the backup back with the first vector words rebuilt from those at 0x4000 (`lpc21isp` sets the checksum word), or flash an exact SWD dump.
+- Either way the board is hard to brick. The ISP bootloader is in ROM, and the BOOT jumper and SWD header always allow reflashing.
+
+### Klipper build settings
+
+- `make menuconfig`: **LPC176x**, **LPC1768 (100 MHz)**, bootloader offset **No bootloader**, communication **Serial on UART0 (P0.3/P0.2)** at **250000** baud.
+- Flash it with BOOT bridged: `lpc21isp -bin out/klipper.bin /dev/ttyUSB0 115200 12000`. Then remove the jumper and power-cycle.
+- Pin map from `config-get` (see [Adding a probe](#adding-a-probe)): steppers step P2.0–P2.3, endstops P1.25/P1.27/P1.29 (max), heater P2.7, thermistor P0.24, fan P2.4 (the heatsink fan is on this output, so in Klipper it must be a `[heater_fan]`), probe P1.28.
 
 ## Tool
 
