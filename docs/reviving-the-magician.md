@@ -198,6 +198,13 @@ The glass raised the bed by about 2 mm, so the Z height Klipper saved on the bar
 
      ![Screw to glass edge, first screw](images/bed-screw-to-glass-ruler-1.jpg)
      ![Screw to glass edge, from the tower foot](images/bed-screw-to-glass-ruler-2.jpg)
+   - **First clamp test print:** the arm printed cleanly, but **the lip end came out messy and stringy**. Likely causes and fixes:
+     - **The lip was printed over air.** If the face that presses on the glass hangs unsupported, those layers droop into strings. **Flip the part so the glass-contact face sits on the bed** (upside down), or print it on its side if the slicer shows no overhang that way.
+     - **The lip is tiny, so each layer finishes in seconds** and has no time to cool: the same effect as the cube's messy "Z" top. Set **Minimum Layer Time to about 10 s** in Cura, **print all three clamps at once** spaced apart so each layer takes longer, and slow the outer walls to about 20 mm/s.
+     - **Before printing the set,** test-fit this piece: the lip step should press the glass down lightly (no gap, no forcing), the slot should line up with the screw, and the lip should reach about 3 mm over the glass edge.
+
+     ![Clamp test: stringy underside of the lip](images/clamp-test-lip-closeup.jpg)
+     ![Clamp test: side view, clean arm, messy lip](images/clamp-test-side.jpg)
 3. **Recalibrate** after any change to the bed: the Z height, then `DELTA_CALIBRATE` (and optionally a bed mesh). The carriages have plenty of spare rod below to go a few mm lower.
 
 ## Adding a probe
