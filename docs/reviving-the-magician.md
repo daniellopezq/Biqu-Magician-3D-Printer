@@ -158,6 +158,16 @@ Tips for small models:
 - **Dry-run big parts first.** For a part that reaches near the edge (ours was a 76 × 49 mm plate), read the reach off the sliced G-code (the closest the nozzle gets to each tower, and the farthest point from the center), then trace the outline with the nozzle 8 mm above the bed and no filament, in three passes at 60%, 80% and 100% of the way out, listening for grinding. Rotating the part so its long side runs between two towers, and a 1 mm skirt instead of 3 mm, both gave a few extra millimetres of margin.
 - **Keep prints near the center** until the bed has a flat surface: the edges of our acrylic are pitted.
 
+## Glass bed
+
+- **The surface:** a **120 mm round glass plate** laid on top of the acrylic bed. Glass is flatter than acrylic, can be cleaned with alcohol (unlike the acrylic), and releases PLA once it cools. It still needs a thin layer of glue stick for adhesion, since the bed is unheated.
+- **Clean underneath first:** wipe the acrylic and the bottom of the glass. Glue residue or dust trapped between them makes the glass rock or sit unevenly, and that shows up as an uneven first layer.
+- **Hold it down:** use 2–3 small binder clips or printed clips at the edge. Keep them outside the reachable print area, so the nozzle and probe can't hit them.
+- **Recalibrate afterward:** the glass raises the bed by its thickness (usually 2–3 mm). On Klipper, redo `PROBE_CALIBRATE` and `DELTA_CALIBRATE` with the glass in place. On stock firmware, lower `M665 Z` by the glass thickness, then redo the paper test.
+- **Size vs reach:** the glass is wider than the area the nozzle can reach (about 100–110 mm across), so the outer edge just gives the clips somewhere to go.
+
+![120 mm glass plate on the acrylic bed](images/bed-glass-120mm.jpg)
+
 ## Adding a probe
 
 The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the probe wiring is already there**: a loose **2-pin plug next to the nozzle block** (about 3.3 V across its pins with the printer on). Bridging its two pins flips `M119` to `Probe: 1`. Only the switch itself is missing.
