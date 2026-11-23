@@ -196,6 +196,11 @@ The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the prob
 ![Probe switch zip-tied to the nozzle block](images/probe-switch-mounted-side.jpg)
 ![Roller about 1.5 cm below the nozzle tip](images/probe-switch-height-tape.jpg)
 
+**Second measurement:** a ruler held level against the bottom of the roller puts the roller roughly **1.3 cm below the nozzle tip** and about **1 cm sideways** from it. These are photo estimates, so treat them as starting values: Klipper's `PROBE_CALIBRATE` measures the real `z_offset`, and `x_offset`/`y_offset` should be checked against a test print or a marked dot on the bed. In the front view, the roller hangs straight down under the switch, and the zip tie stays clear of the lever.
+
+![Front view: roller hanging under the switch](images/probe-roller-front-view.jpg)
+![Ruler at the bottom of the roller, for the height below the nozzle](images/probe-height-ruler.jpg)
+
 ## Klipper?
 
 The LPC1768 is supported by Klipper. Without a mainboard SD card, flashing goes through the chip's built-in serial bootloader (ISP) or its SWD debug port. A Linux host is needed, and the stock touchscreen no longer works afterward.
