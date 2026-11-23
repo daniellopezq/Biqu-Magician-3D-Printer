@@ -37,14 +37,33 @@ The print takes about 7 minutes and uses about 1 g of filament.
 
 ## Results
 
+Both cubes from the same STL and slicer profile, in the same grey PLA. **Left: stock Smoothieware. Right: Klipper v0.14.0** (after `DELTA_CALIBRATE` with the temporary probe and a paper-test Z height, see [Klipper on the BIQU Magician](../../docs/klipper.md)).
+
 | | Stock Smoothieware | Klipper |
 |---|---|---|
-| X × Y × Z measured | about 10 mm on each face (ruler and photos, ±0.3 mm) | not tested yet |
-| Letters | X, Y and Z crisp and readable | |
-| Corners and walls | square, no curling | |
-| Top face | the Z on top is messy (typical for 10 mm cubes: each top layer takes seconds) | |
-| Calipers (X, Y, Z) | not measured yet | |
+| X × Y × Z measured | about 10 mm on each face (ruler and photos, ±0.3 mm) | looks the same size by eye; not measured yet |
+| Top face (Z) | messy: the embossed Z is blobbed and the top lines are rough | **clearly better**: clean Z, even top lines |
+| Letters X and Y | crisp | slightly crisper edges |
+| Bottom edge | square | **elephant's foot**: the bottom layers flare out, with a small blob at one corner of the Y face |
+| Side walls | smooth, even layers | a little more textured: possibly slight over-extrusion or no pressure advance yet |
+| Calipers (X, Y, Z) | not measured yet | not measured yet |
 
-For a finer comparison, measure the three sides with calipers and write them in the table. A minimum layer time of about 10 seconds in the slicer helps the top face of small parts.
+**What this says:**
+- **Klipper's motion is better.** The top surface improvement is the clearest difference: smoother moves and steadier extrusion where the nozzle changes direction a lot.
+- **The first layer is too close on Klipper.** The elephant's foot means the nozzle starts a little low, so the first layers are squished out. The Z height came from a paper test with the probe removed, which is easy to get slightly low.
+- **The extrusion isn't tuned yet** on Klipper (no extruder calibration or pressure advance), which fits the textured walls.
+
+**Next tuning steps on Klipper:**
+1. **First layer:** raise the nozzle 0.05–0.1 mm. On the next print, baby-step Z up in Mainsail during the first layer until the lines are flat but not squished. Then save it (`Z_OFFSET_APPLY_ENDSTOP` for endstop-based Z, or `Z_OFFSET_APPLY_PROBE` when probing, then `SAVE_CONFIG`). In Cura, "Initial Layer Horizontal Expansion" at −0.1 to −0.2 mm also hides a small elephant's foot.
+2. **Extruder:** mark the filament 120 mm above the extruder, extrude 100 mm slowly with the hotend hot, measure what's left, and correct `rotation_distance` for the extruder.
+3. **Pressure advance:** run Klipper's tower test (`TUNING_TOWER COMMAND=SET_PRESSURE_ADVANCE PARAMETER=ADVANCE START=0 FACTOR=.005`) and pick the cleanest height.
+4. **Recalibrate on glass:** this cube was printed on the acrylic bed. With the 120 mm glass plate fitted, redo the Z height (and ideally `DELTA_CALIBRATE`).
+5. **Calipers:** measure both cubes on X, Y and Z, and fill in the table.
+
+![Top face: stock left, Klipper right](../../docs/images/compare-cube-top-z.jpg)
+![X face: stock left, Klipper right](../../docs/images/compare-cube-x-face.jpg)
+![Y face: Klipper (right) shows the flared bottom and a corner blob](../../docs/images/compare-cube-y-face.jpg)
+![Plain face: elephant's foot on the Klipper cube (right)](../../docs/images/compare-cube-blank-face.jpg)
+![Back face: walls on both](../../docs/images/compare-cube-back-face.jpg)
 
 Photos of the Smoothieware cube are in [`docs/images/`](../../docs/images/) (`first-print-cube-*.jpg`).

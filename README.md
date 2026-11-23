@@ -37,7 +37,11 @@ Unplug the touchscreen's serial cable first, or the printer will ignore USB comm
 
 A second print, a 40 mm figure with tree supports, also came out fine ([settings](docs/reviving-the-magician.md#second-print-a-small-figure-with-supports)). The probe wiring is already on the board: the plug by the nozzle block is the probe input, so a normally-open lever microswitch on it should work with the stock firmware ([how we found it](docs/reviving-the-magician.md#adding-a-probe)). `config-get` also gave the full stock pin map for a later Klipper config.
 
-Next: a glass bed surface, a removable microswitch probe and mount, and possibly Klipper.
+**Now on Klipper** (v0.14.0, flashed over the BOOT/ISP jumper, calibrated with a temporary microswitch probe): see [Klipper on the BIQU Magician](docs/klipper.md). The same 10 mm cube on both firmwares shows a cleaner top surface on Klipper, plus a first layer that's a bit too squished, which is the next thing to tune ([side-by-side comparison](models/calibration-cube/README.md#results)).
+
+<img src="docs/images/compare-cube-top-z.jpg" alt="10 mm cube tops: stock Smoothieware left, Klipper right" width="320">
+
+Next: fix the first-layer height, calibrate the extruder and pressure advance, redo the Z height on the glass bed, and print a proper removable probe mount.
 
 ## License
 
