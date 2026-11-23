@@ -175,6 +175,17 @@ The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the prob
 
 **Planned switch:** a subminiature **lever microswitch with three terminals (C, NO, NC)**, such as Steren's SS0505A. Wire **C and NO** to the plug (a plain switch has no polarity). Under Klipper, **C and NC** is the safer choice: invert the pin with `!` in `printer.cfg`, and a broken wire then reads as "triggered" instead of letting the nozzle crash. On a delta, the probe has to be removable, or retract above the nozzle, so it doesn't drag on prints. Its X/Y/Z offset from the nozzle can be set with `M565` in the start G-code.
 
+**Temporary mount (fitted):**
+- An SS0505A roller-lever switch, wired **brown = C (GND)** and **red = NC (signal)**.
+- Zip-tied flat against the underside of the nozzle block.
+- The roller hangs about **1.5 cm below the nozzle tip**. That's a rough reading from a tape measure, and it's fine for calibration because `PROBE_CALIBRATE` measures the real `z_offset`. It **must be removed or raised before printing**.
+- The roller sits roughly **2–3 cm to one side** of the nozzle. Measure the exact X/Y offset for `[probe]`.
+- In Klipper, because it's NC: `pin: ^!P1.28` (pull-up, inverted), so a broken wire reads as triggered.
+- **Clean the old plastic blob off the nozzle** before calibrating.
+
+![Probe switch zip-tied to the nozzle block](images/probe-switch-mounted-side.jpg)
+![Roller about 1.5 cm below the nozzle tip](images/probe-switch-height-tape.jpg)
+
 ## Klipper?
 
 The LPC1768 is supported by Klipper. Without a mainboard SD card, flashing goes through the chip's built-in serial bootloader (ISP) or its SWD debug port. A Linux host is needed, and the stock touchscreen no longer works afterward.
