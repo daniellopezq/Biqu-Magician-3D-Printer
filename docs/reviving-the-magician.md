@@ -205,6 +205,10 @@ The glass raised the bed by about 2 mm, so the Z height Klipper saved on the bar
 
      ![Clamp test: stringy underside of the lip](images/clamp-test-lip-closeup.jpg)
      ![Clamp test: side view, clean arm, messy lip](images/clamp-test-side.jpg)
+   - **Clamps installed:** three printed clamps under the original bed screws, with the slotted holes taking up the small differences between screws, and the lips flat over the glass edge. The glass was cleaned underneath (the dark patch is gone) and stays on the acrylic for now. Checks before calibrating: no rocking when pressed at the center or near each clamp, screws snug but not cranked down (the acrylic is chipped at the holes), and a slow pass at Z 20 toward each clamp to confirm the probe roller and arm joints clear them.
+
+     ![Clamps installed, angled view](images/bed-clamps-installed-angle.jpg)
+     ![Clamps installed, top view](images/bed-clamps-installed-top.jpg)
 3. **Recalibrate** after any change to the bed: the Z height, then `DELTA_CALIBRATE` (and optionally a bed mesh). The carriages have plenty of spare rod below to go a few mm lower.
 
 ## Adding a probe
