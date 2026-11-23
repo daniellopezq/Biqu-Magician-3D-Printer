@@ -194,6 +194,10 @@ The glass raised the bed by about 2 mm, so the Z height Klipper saved on the bar
    - **First, straightedge test:** stand a steel ruler on its edge across the bare plate in several directions. If light shows under it, the plate is bowed: keep the acrylic, or put a thin cork or silicone sheet under the glass.
    - **Rust:** scrub only the rust spots with #000 steel wool (dry, or with a drop of oil, then degrease with isopropyl alcohol, which is fine on steel). Don't strip the black coating broadly. Remove **every** steel-wool fiber, using a magnet to help: a single fiber under the glass makes it rock, and the fibers are conductive. Seal bare spots with a dab of black paint or clear lacquer, and let it dry fully.
    - **Screws:** check that the three screw holes in the plate are threaded, and fit shorter screws if the old ones now stick out too far underneath.
+   - **Clamp measurements so far** (rough, from ruler photos): the bed screws look like **M3 button-head hex screws**, and the **screw center sits about 15 mm (up to about 20 mm) from the glass edge**. Clamp design to match: a flat tab about 25–30 mm long and 10–12 mm wide, a **slotted M3 hole** so each clamp can slide in or out (the glass may not be perfectly centered), and a lip that steps down by the glass thickness and reaches about 3 mm over the edge. Keep it 2–3 mm tall overall so the probe and arms clear it. **Still to measure at each of the three screws:** screw center to glass edge, screw head diameter, and the exact glass thickness (calipers).
+
+     ![Screw to glass edge, first screw](images/bed-screw-to-glass-ruler-1.jpg)
+     ![Screw to glass edge, from the tower foot](images/bed-screw-to-glass-ruler-2.jpg)
 3. **Recalibrate** after any change to the bed: the Z height, then `DELTA_CALIBRATE` (and optionally a bed mesh). The carriages have plenty of spare rod below to go a few mm lower.
 
 ## Adding a probe
