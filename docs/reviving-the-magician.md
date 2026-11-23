@@ -200,6 +200,9 @@ The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the prob
 
 ![Front view: roller hanging under the switch](images/probe-roller-front-view.jpg)
 ![Ruler at the bottom of the roller, for the height below the nozzle](images/probe-height-ruler.jpg)
+![The whole printer with the temporary probe fitted](images/probe-mounted-overview.jpg)
+
+**Before moving the printer: trim the zip-tie tails.** Long tails sticking out of the nozzle block can catch the arms, belts or rods as the head moves.
 
 ## Klipper?
 
