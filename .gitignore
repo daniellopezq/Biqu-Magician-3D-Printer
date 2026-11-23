@@ -24,3 +24,6 @@ tools/fan_full
 # Local to our own printer, not shared: calibration log, settings backups, shopping list
 backups/
 local/
+
+# stock flash read: kept locally, not published (vendor build). SHA-256 is in firmware/stock-backup.bin.sha256
+firmware/stock-backup.bin

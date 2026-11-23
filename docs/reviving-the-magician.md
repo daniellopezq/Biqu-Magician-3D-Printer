@@ -183,14 +183,14 @@ The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the prob
 
 **How we confirmed the plug:** with the printer on, a multimeter showed 3.3 V across its two pins, which is the pulled-up signal against ground, so shorting them is safe. While watching `M119` (it only reads, nothing moves), touching a paper clip across the two pins flipped `Probe: 0` to `Probe: 1`. Don't short anything on a connector with three or more pins until you know which pin is 5 V.
 
-**Planned switch:** a subminiature **lever microswitch with three terminals (C, NO, NC)**, such as Steren's SS0505A. Wire **C and NO** to the plug (a plain switch has no polarity). Under Klipper, **C and NC** is the safer choice: invert the pin with `!` in `printer.cfg`, and a broken wire then reads as "triggered" instead of letting the nozzle crash. On a delta, the probe has to be removable, or retract above the nozzle, so it doesn't drag on prints. Its X/Y/Z offset from the nozzle can be set with `M565` in the start G-code.
+**Planned switch:** a subminiature **lever microswitch with three terminals (C, NO, NC)**, such as Steren's SS0505A. Wire **C and NO** to the plug (a plain switch has no polarity). Under Klipper, **C and NC** is the safer choice: use `pin: ^P1.28` (no `!`), and a broken wire then reads as "triggered" instead of letting the nozzle crash. On a delta, the probe has to be removable, or retract above the nozzle, so it doesn't drag on prints. Its X/Y/Z offset from the nozzle can be set with `M565` in the start G-code.
 
 **Temporary mount (fitted):**
 - An SS0505A roller-lever switch, wired **brown = C (GND)** and **red = NC (signal)**.
 - Zip-tied flat against the underside of the nozzle block.
 - The roller hangs about **1.5 cm below the nozzle tip**. That's a rough reading from a tape measure, and it's fine for calibration because `PROBE_CALIBRATE` measures the real `z_offset`. It **must be removed or raised before printing**.
 - The roller sits roughly **2–3 cm to one side** of the nozzle. Measure the exact X/Y offset for `[probe]`.
-- In Klipper, because it's NC: `pin: ^!P1.28` (pull-up, inverted), so a broken wire reads as triggered.
+- In Klipper, because it's NC: `pin: ^P1.28` (pull-up, **not** inverted), so a broken wire reads as triggered. Verified: `QUERY_PROBE` says open at rest and TRIGGERED when the roller is pressed. (`^!P1.28` is for a C+NO switch.)
 - **Clean the old plastic blob off the nozzle** before calibrating.
 
 ![Probe switch zip-tied to the nozzle block](images/probe-switch-mounted-side.jpg)
@@ -228,16 +228,16 @@ The LPC1768 is supported by Klipper. Without a mainboard SD card, flashing goes 
 
 - A full 512 KB read over ISP, done twice with identical results, showed that **Code Read Protection is off**.
 - From **0x4000** on, the image is the complete Smoothie firmware: stack pointer 0x10008000, valid vectors, ending around 382 KB.
-- **0x0000–0x3FFF read back as zeros**, except the first 8 bytes, which are the boot ROM's own vectors (`10001ffc 1fff0081`).
-  - Likely explanation: in ISP mode the LPC17xx maps the boot ROM vectors over the **first 64 bytes**, so only those are hidden. The zeros after that would then be real, meaning no SD bootloader was ever installed (the board has no SD slot), just a vector table at 0x0 that starts the firmware at 0x4000.
-  - This is unverified. An **SWD read** settles it and gives an exact copy.
-- **Restore plan:** write the backup back with the first vector words rebuilt from those at 0x4000 (`lpc21isp` sets the checksum word), or flash an exact SWD dump.
+- **The first 512 bytes (0x000–0x1FF) cannot be read over ISP.** They read back the same before and after flashing Klipper: the boot ROM covers them (the first words are its own vectors, `10001ffc 1fff0081`). `lpc21isp -verify` therefore always reports a compare error on sector 0, even though the write is fine (read back and compared from 0x200 on).
+- Everything else in 0x200–0x3FFF is real: a small bootloader of about 14 KB, then 0xFF padding. The vector table at 0x0 was **not** captured, so its words must be rebuilt: the stack pointer is probably 0x10008000 (top of RAM), the reset vector points into the bootloader, and the checksum word at 0x1C is computed from the other vectors. An **SWD read** gives an exact copy.
+- **Restore plan:** write the backup back with the first 512 bytes rebuilt (see [Klipper on the Magician](klipper.md#restoring-the-stock-firmware)), or flash an exact SWD dump.
 - Either way the board is hard to brick. The ISP bootloader is in ROM, and the BOOT jumper and SWD header always allow reflashing.
 
 ### Klipper build settings
 
 - `make menuconfig`: **LPC176x**, **LPC1768 (100 MHz)**, bootloader offset **No bootloader**, communication **Serial on UART0 (P0.3/P0.2)** at **250000** baud.
-- Flash it with BOOT bridged: `lpc21isp -bin out/klipper.bin /dev/ttyUSB0 115200 12000`. Then remove the jumper and power-cycle.
+- **Heater warning:** with BOOT bridged and power on, nothing controls the heater pin and it **heats by itself** (we saw 27 → 115 °C in about a minute). Unscrew one heater wire first.
+- Flash it with BOOT bridged: `lpc21isp -bin -verify out/klipper.bin /dev/ttyUSB0 115200 12000`. Then remove the jumper and power-cycle. Full steps: [Klipper on the Magician](klipper.md).
 - Pin map from `config-get` (see [Adding a probe](#adding-a-probe)): steppers step P2.0–P2.3, endstops P1.25/P1.27/P1.29 (max), heater P2.7, thermistor P0.24, fan P2.4 (the heatsink fan is on this output, so in Klipper it must be a `[heater_fan]`), probe P1.28.
 
 ## Tool
