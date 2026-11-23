@@ -168,6 +168,34 @@ Tips for small models:
 
 ![120 mm glass plate on the acrylic bed](images/bed-glass-120mm.jpg)
 
+### Bed stack measurements
+
+Ruler readings from photos (±0.5 mm). Confirm them with calipers.
+
+| Layer | Thickness |
+|---|---|
+| Steel base plate | about 2 mm |
+| Acrylic bed (3 screws at its lobes) | about 3 mm |
+| Glass plate | about 2 mm |
+| Glass diameter | about 120 mm |
+
+The glass raised the bed by about 2 mm, so the Z height Klipper saved on the bare acrylic is about 2 mm too low for the glass. **Redo the Z height (and ideally `DELTA_CALIBRATE`) with the glass clamped in place before printing.**
+
+![Side view of the bed stack against a ruler](images/bed-stack-side-ruler.jpg)
+![Ruler on the base plate: acrylic thickness](images/bed-acrylic-ruler.jpg)
+![Ruler on the acrylic: glass thickness](images/bed-glass-ruler.jpg)
+![Top view: glass on the acrylic, with a dark patch showing underneath](images/bed-glass-top-view.jpg)
+![Glass diameter, about 12 cm](images/bed-glass-diameter-ruler.jpg)
+
+### Plan: glass straight on the steel plate, held by printed clamps
+
+1. **Clamps:** use printed tabs under the **three existing bed screws**, each with a lip that overhangs the glass edge by 2–3 mm. The lip height has to match the glass thickness (about 2 mm). A ready-made design for this printer is the [Biqu Magician Mirror Clamp](https://www.thingiverse.com/thing:3128172). Check its lip height against your glass, and model a custom one if it doesn't match. Keep the clamps low and outside the nozzle's reach (beyond about 50–55 mm from the center), so the probe roller and arms never hit them. Quick alternatives: 15–19 mm binder clips with the handles folded down, or a thin water film under the glass.
+2. **Optionally remove the acrylic** and put the glass directly on the steel plate. That gains only about 3 mm of height; the real benefit is flatness, since acrylic is soft, can bow, and is chipped at the screw holes.
+   - **First, straightedge test:** stand a steel ruler on its edge across the bare plate in several directions. If light shows under it, the plate is bowed: keep the acrylic, or put a thin cork or silicone sheet under the glass.
+   - **Rust:** scrub only the rust spots with #000 steel wool (dry, or with a drop of oil, then degrease with isopropyl alcohol, which is fine on steel). Don't strip the black coating broadly. Remove **every** steel-wool fiber, using a magnet to help: a single fiber under the glass makes it rock, and the fibers are conductive. Seal bare spots with a dab of black paint or clear lacquer, and let it dry fully.
+   - **Screws:** check that the three screw holes in the plate are threaded, and fit shorter screws if the old ones now stick out too far underneath.
+3. **Recalibrate** after any change to the bed: the Z height, then `DELTA_CALIBRATE` (and optionally a bed mesh). The carriages have plenty of spare rod below to go a few mm lower.
+
 ## Adding a probe
 
 The firmware's probe module is enabled (`M119` shows `Probe: 0`), and **the probe wiring is already there**: a loose **2-pin plug next to the nozzle block** (about 3.3 V across its pins with the printer on). Bridging its two pins flips `M119` to `Probe: 1`. Only the switch itself is missing.
