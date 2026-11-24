@@ -104,3 +104,7 @@ Left: the 3rd cube on glass. Right: the 4th, after further tuning.
 
 ![Rounds 3 (left) and 4 (right), X face](../../docs/images/compare4-x-face.jpg)
 ![Rounds 3 and 4, angled: bottom lip and zits on the letters](../../docs/images/compare4-x-face-angle.jpg)
+
+**Bottoms of rounds 3 (left) and 4 (right):** both still show **separate first-layer lines with gaps between them**. The 4th cube's lines are a little tighter, but the nozzle is still slightly too high on the glass. Lower Z another **0.02–0.05 mm** with baby-stepping, until the bottom comes out as a solid, smooth sheet, then save it. A thin layer of glue stick on the glass helps the lines bond.
+
+![Bottoms of rounds 3 and 4: separate first-layer lines](../../docs/images/compare4-bottom.jpg)
