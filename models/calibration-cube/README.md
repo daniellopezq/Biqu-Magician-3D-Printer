@@ -108,3 +108,20 @@ Left: the 3rd cube on glass. Right: the 4th, after further tuning.
 **Bottoms of rounds 3 (left) and 4 (right):** both still show **separate first-layer lines with gaps between them**. The 4th cube's lines are a little tighter, but the nozzle is still slightly too high on the glass. Lower Z another **0.02–0.05 mm** with baby-stepping, until the bottom comes out as a solid, smooth sheet, then save it. A thin layer of glue stick on the glass helps the lines bond.
 
 ![Bottoms of rounds 3 and 4: separate first-layer lines](../../docs/images/compare4-bottom.jpg)
+
+## 40 mm/s test (Klipper, glass)
+
+The same 10 mm cube printed at 40 mm/s.
+
+- **Walls and letters:** mostly fine at this speed. The walls are even, with small zits on the X and Y letters (pressure advance not tuned yet).
+- **Top (Z):** acceptable, with some infill showing through the top surface. Add one more top layer (4–5 top layers at 0.2 mm), or slow the top surface down.
+- **Bottom: clearly worse.** It's messy and stringy, with gaps between the lines, and a separated **lip around the bottom edge** on every side. The first layer isn't bonding to the glass.
+  - Keep the **first layer at 15–20 mm/s** even when the rest prints at 40. In Cura, "Initial Layer Speed" is separate from the print speed.
+  - Lower Z by another **0.03–0.05 mm** (the bottom should print as a solid sheet), and use a thin layer of **glue stick** on the glass. Print the first layer a little hotter (215 °C), with the **fan off or low for the first 1–2 layers** if the heatsink fan wiring allows it. On this printer the heatsink fan shares the part-fan output, so keep it on and rely on speed and temperature instead.
+- **Verdict:** 40 mm/s is fine for walls. The weak point is the first layer on cold glass, so fix the first-layer settings before going faster.
+
+![40 mm/s: top](../../docs/images/cube40-top-z.jpg)
+![40 mm/s: X face](../../docs/images/cube40-x-face.jpg)
+![40 mm/s: Y face](../../docs/images/cube40-y-face.jpg)
+![40 mm/s: bottom, stringy first layer with gaps](../../docs/images/cube40-bottom.jpg)
+![40 mm/s: plain face, with the bottom lip](../../docs/images/cube40-blank-face.jpg)
