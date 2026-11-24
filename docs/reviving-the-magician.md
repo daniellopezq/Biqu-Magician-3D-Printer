@@ -266,6 +266,8 @@ Photos can't give Klipper's X/Y offsets reliably: perspective distorts them, and
 ![Roller lever next to the nozzle](images/probe-remount-lever.jpg)
 ![Angled view: the blue zip-tie tail still needs trimming](images/probe-remount-angle-ruler.jpg)
 
+**Next: a proper bracket.** A removable clip-on bracket that slides onto the molded teeth on the effector (or goes under a fan screw), with slotted M2 holes to set the roller 3–5 mm below the nozzle: [models/probe-mount](../models/probe-mount/).
+
 **Before moving the printer: trim the zip-tie tails.** Long tails sticking out of the nozzle block can catch the arms, belts or rods as the head moves.
 
 ## Klipper?
