@@ -67,3 +67,28 @@ Both cubes from the same STL and slicer profile, in the same grey PLA. **Left: s
 ![Back face: walls on both](../../docs/images/compare-cube-back-face.jpg)
 
 Photos of the Smoothieware cube are in [`docs/images/`](../../docs/images/) (`first-print-cube-*.jpg`).
+
+## Three-way comparison: stock, Klipper on acrylic, Klipper on glass
+
+Left to right in each photo: **stock Smoothieware**, **Klipper on the acrylic bed**, **Klipper on the 120 mm glass plate** (clamped, recalibrated).
+
+| | Stock | Klipper, acrylic | Klipper, glass |
+|---|---|---|---|
+| Top (Z) | messy, blobbed Z | clean Z, even lines | clean Z, top slightly rougher |
+| X / Y letters | crisp | crisp | crisp |
+| Bottom face | smooth, glossy | smooth, glossy | **separate lines with gaps between them** |
+| Bottom edge | square | elephant's foot | **small lip or ridge** |
+| Walls | smoothest | slightly textured | most textured, some stringing |
+| Size (ruler) | about 10 mm | about 10 mm | about 10 mm |
+
+**What the glass cube says:**
+- **The first layer is now too high.** The lines on the bottom are visible with gaps between them, so they aren't squished together. On the acrylic it was squished too much. Lower Z by about **0.05 mm** with baby-stepping during the first layer, then save it.
+- **The bottom lip** is probably the first layers lifting slightly: cold glass holds PLA less well than glue-coated acrylic. Use a thin layer of **glue stick on the glass**, and print the first layer slower and hotter (215 °C, 15–20 mm/s).
+- **The textured walls and stringing** are untuned extrusion. Next: extruder `rotation_distance` calibration and pressure advance, then more retraction if stringing remains.
+- The size is consistent and the motion is good, so what's left is first-layer height, adhesion and extrusion tuning.
+
+![Top: stock, Klipper acrylic, Klipper glass](../../docs/images/compare3-top-z.jpg)
+![X face](../../docs/images/compare3-x-face.jpg)
+![Y face](../../docs/images/compare3-y-face.jpg)
+![Bottoms: the glass cube (right) shows separate first-layer lines](../../docs/images/compare3-bottom.jpg)
+![Plain face](../../docs/images/compare3-blank-face.jpg)
