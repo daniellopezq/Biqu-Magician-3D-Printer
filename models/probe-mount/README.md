@@ -4,6 +4,8 @@ A clip-on bracket for the roller-lever microswitch probe described in [Adding a 
 
 > **Status: untested.** Every effector dimension in `probe_mount.scad` is a guess from photos. Measure first (list below), print the test clip, then print the bracket.
 
+> ⚠️ **Review (side photo): the clip geometry is wrong, redesign needed.** See [Review: what the mount point really is](#review-what-the-mount-point-really-is) below.
+
 | File | What it is |
 |---|---|
 | `probe_mount.scad` | Parametric model. All dimensions are variables at the top. |
@@ -104,3 +106,38 @@ The current zip-tied switch measured **10 mm** with the dot method (it sits clos
 ## Not included
 
 A flip-up/retracting version: it needs a hinge and a latch that hold the roller to repeatable height, which adds slop the clip doesn't have. Pulling the clip off is quicker and more repeatable.
+
+## Review: what the mount point really is
+
+![Side view: raised band with two square lugs, rod-end eye just to the right](images/effector-band-lugs-side.jpg)
+
+A level side photo shows that the "teeth" in the earlier angled photo are **not downward-pointing teeth with a gap behind them**:
+
+- There is a **raised horizontal band (rib)** around the blue effector, a few mm tall, just above the lower body.
+- On that band sit **two small square lugs** (roughly 3–4 mm wide, with a gap of about the same between them) that stick **outward** from the band. They look like snap lugs for an OEM shroud or duct.
+- **2 lugs, not 4.** Nothing hangs below the effector for pockets to slide over, and there is no `tooth_gap` behind them.
+- The **rod-end eye is very close**: about one lug-width to the right of the lugs, at roughly the same height. Clearance there is the tightest constraint.
+
+**So the current comb clip (pockets sliding up from below, tongue behind the teeth) has nothing to grip. Don't print it.**
+
+### Suggested redesign: saddle clip over the band
+
+- An upper lip hooks over the top edge of the band and a lower lip under its bottom edge, so it snaps on horizontally or vertically.
+- **Two rectangular windows** drop over the two lugs and key it against sliding sideways (and give a positive snap).
+- The switch plate hangs below, as now (M2 slots, nut grooves, zip-tie slots all stay).
+- Keep the saddle narrow, ending before the rod-end eyes on both sides; the side toward the joint is the critical one.
+- Keep the probing force pushing the saddle **up into** the band, so it seats rather than loosens.
+- Still print a quick test piece (saddle only) before the full bracket.
+
+### Measurements needed (calipers)
+
+1. Band height (top edge to bottom edge) and how far it sticks out from the body below it.
+2. Each lug's width, height and how far it sticks out, plus the gap between the two lugs.
+3. Nozzle tip up to the band's bottom edge.
+4. Lugs to the nearest rod-end eye: sideways and height.
+5. Heater block reach toward that face (still needed for the switch keep-out).
+
+### Other review notes on the current files
+
+- `probe_mount_fan.stl` is **not watertight** (it may slice badly); regenerate it after measuring.
+- Expected roller distance stays about **17 mm** from the nozzle (vs 10 mm for the zip-tied switch) because of the 8 mm heater keep-out. That's fine for calibration: redo the X/Y offsets with the dot method afterwards.
