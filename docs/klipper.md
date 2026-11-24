@@ -73,12 +73,24 @@ The probe is a temporary SS0505A roller switch zip-tied to the nozzle block, rou
 
 With the heatsink fan confirmed, `M104 S50` reached 50 °C in 21 s, and `M104 S200` reached 200 °C in about 100 s, settling at 200-201 °C with the stock PID values (P22.2 I1.08 D114). Run `PID_CALIBRATE HEATER=extruder TARGET=210` later if wanted.
 
+## Glass bed and the remounted probe (2026-11-23)
+
+The 120 mm glass plate now sits on the acrylic, held by three printed slotted clamps ([`models/glass-clamp/`](../models/glass-clamp/)). The probe was remounted along the way, and these numbers came out of it:
+
+- **Probe offsets:** the roller is **10 mm toward tower C** (`x_offset: 0`, `y_offset: 10`) and hangs **13.15 mm below the nozzle** (`z_offset`). The ruler estimate of 9-10 mm was wrong; the paper test gave the real value. The roller faces A and B (the front), and the switch body points at C.
+- **Towers:** A = front-left (210 deg), B = front-right (330 deg), C = back (90 deg). Checked by touching each endstop.
+- **Method:** `G28`, `DELTA_CALIBRATE` (radius 45), `SAVE_CONFIG`, then a cold-nozzle paper test at the centre (`MANUAL_PROBE`, `TESTZ`, `ACCEPT`) to set the true Z, applied by hand to the three endstops. `Z_OFFSET_APPLY_ENDSTOP` stages nothing after a plain `MANUAL_PROBE`.
+- **Edge check (paper, r = 40):** A -0.36, B +0.15, C +0.05, front -0.30 mm against the centre. The glass is not clamped down firmly, so part of that tilt may be the glass seating. All three endstops were trimmed (+0.54 / -0.18 / -0.17) and later lowered by 0.05 and 0.04 for the first layer.
+- **Reach:** `print_radius` is now 66. The arms can reach about 83 mm (arm horizontal), so a 130 mm bed looks possible with a bigger glass.
+
+First layer on the glass: 215 C for layer 1, then 205 C, 15 mm/s, thin glue stick. The bottom still shows slightly separate lines, so a little more Z may follow.
+
 ## What is still open
 
-- Extruder direction (`!P0.22`) and steps check with filament loaded.
-- Glass bed (3 mm, 120 mm): print clips, refit, run `DELTA_CALIBRATE` again, `SAVE_CONFIG`.
-- Raise `print_radius` (now 45) in steps with no-filament dry runs.
-- Set `minimum_z_position` back to -5.
+- Bigger glass (150 mm mirror, [tray adapter 2713277](https://www.thingiverse.com/thing:2713277)) and an accelerometer for input shaping.
+- A printed probe bracket (the nozzle shroud has a rail that looks like the original mount), then re-measure the probe offsets with it fitted.
+- Probe-based edge check with `bed_mesh`, once the glass is firmly seated.
+- Pressure advance and extruder tuning.
 
 ## Restoring the stock firmware
 
