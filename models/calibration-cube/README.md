@@ -92,3 +92,15 @@ Left to right in each photo: **stock Smoothieware**, **Klipper on the acrylic be
 ![Y face](../../docs/images/compare3-y-face.jpg)
 ![Bottoms: the glass cube (right) shows separate first-layer lines](../../docs/images/compare3-bottom.jpg)
 ![Plain face](../../docs/images/compare3-blank-face.jpg)
+
+## Rounds 3 and 4 on glass (Klipper)
+
+Left: the 3rd cube on glass. Right: the 4th, after further tuning.
+
+- **The 4th is better:** smoother, more even walls and cleaner corners.
+- **Still on both:** a small **lip at the bottom**, where the first 2–3 layers stick out slightly. That's first-layer height plus adhesion on cold glass. Use a touch more squish, glue stick, and a slower, hotter first layer. For parts that need exact dimensions at the base, use elephant's foot compensation in Cura (−0.1 to −0.2 mm).
+- **Small zits on the letters** and a **string** on the 4th cube come from pressure and retraction at the start and end of lines. **Pressure advance tuning** (`TUNING_TOWER`) should fix most of it.
+- **Verdict: good enough for most prints** (figures, brackets, holders). The remaining work is fine-tuning.
+
+![Rounds 3 (left) and 4 (right), X face](../../docs/images/compare4-x-face.jpg)
+![Rounds 3 and 4, angled: bottom lip and zits on the letters](../../docs/images/compare4-x-face-angle.jpg)
