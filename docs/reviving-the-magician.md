@@ -309,3 +309,19 @@ The LPC1768 is supported by Klipper. Without a mainboard SD card, flashing goes 
 ## Tool
 
 [`tools/printer_link.py`](../tools/printer_link.py) keeps one serial connection open and lets you send G-code from short commands. It ignores the touchscreen's temperature chatter and reopens the port if the printer is power-cycled. Run it with Python 3 and `pyserial`; see the docstring for usage.
+
+### Finding: the glass was moving
+
+The earlier first-layer problems (gaps between lines, lip around the bottom edge, inconsistent cubes) turned out to be mostly **the glass plate shifting** on the bed, not Z height alone. With the glass held still, a thin flat test part printed flat with well-bonded lines, round small loops, even gaps and no edge lip.
+
+![Flat test part, angled](images/paddle-angle.jpg)
+![Flat test part, top](images/paddle-top.jpg)
+
+**Keep the glass from moving:**
+- Tighten the clamps until the glass can't slide at all. Check before every print: push it sideways with a finger. If it moves, re-clamp.
+- If the clamps can't grip enough: a few dots of high-temp silicone or thin double-sided tape under the glass, or a fourth clamp.
+
+**Remaining (normal tuning, not the bed):**
+- Zits where each arc meets the frame (seams, line starts and stops): tune pressure advance, set the seam to "sharpest corner".
+- Light stringing between the arcs: about 1 mm more retraction, or 5 °C cooler.
+- Rough, gappy top on the handle: add one top layer.
