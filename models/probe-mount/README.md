@@ -131,3 +131,17 @@ A level side photo shows that the "teeth" in the earlier angled photo are **not 
 **So the comb clip (pockets sliding up from below, tongue behind the teeth) had nothing to grip.** It was replaced by the saddle described [above](#how-it-mounts), following the redesign suggested here: lips over and under the band, two windows over the lugs, a narrow saddle that stops short of the rod-end eye and cable, the switch plate unchanged, and probing force seating it upward.
 
 Also checked in that review: it said `probe_mount_fan.stl` was not watertight. That was wrong. PrusaSlicer reports all three STLs as manifold, single-part meshes, and an edge-pairing check finds no open edges.
+
+### Ruler photos (rough, from photos; confirm with calipers)
+
+![Ruler level under the effector: tab on the left, rod-end eye at about 2.6 cm](images/ruler-tab-to-rodend.jpg)
+
+Scale: about 225 px/cm at the ruler edge. Perspective makes these approximate (±1–2 mm):
+
+- **Tab width:** about **2–2.5 mm** (along the face). It hangs **down** from the band, about 3–4 mm tall.
+- **Tab to rod-end eye:** about **13 mm** from the tab's edge to the eye's edge, about **17 mm** to the eye's centre. The eye's bottom sits roughly level with the tab's bottom (slightly higher).
+- So the saddle can extend **at most about 10 mm** sideways from the tab toward the rod end (2–3 mm clearance kept).
+
+Other photos (purpose unclear, kept for reference): [under the effector](images/ruler-under-effector.jpg), [tilted ruler at the tab](images/ruler-tab-tilted.jpg).
+
+Still needed: number of tabs and the gap between them (straight-on close-up), how far each tab sticks out, and **nozzle tip to the tab bottom** (move to `G1 Z50`, measure bed → tab bottom, subtract 50).
