@@ -155,3 +155,7 @@ The scan can't give real dimensions (KIRI scale is arbitrary and it smooths smal
 | Slot width (mm) | 2.0 | 2.3 | 2.6 | 2.9 | 3.2 | 3.6 |
 
 Print flat (as exported), 0.2 mm layers, no supports, about 5 minutes. Push each slot up over a tab from below. The **narrowest slot that slides on with light friction** is the pocket width. Then report the slot number, plus how far the tab sits inside the slot (that's how far it sticks out).
+
+**Gauge result 1:** even slot 6 (3.6 mm) only went halfway on, and needed force. The tab is **wider than 3.6 mm**, or it tapers (wider at the root). The photo estimate of 2–2.5 mm was wrong.
+
+**`tab_gauge_2.stl`:** slots 3.8, 4.1, 4.4, 4.7, 5.0, 5.4 mm (1–6 notches), 6 mm deep, 7 mm tall.
