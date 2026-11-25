@@ -145,3 +145,13 @@ Scale: about 225 px/cm at the ruler edge. Perspective makes these approximate (�
 Other photos (purpose unclear, kept for reference): [under the effector](images/ruler-under-effector.jpg), [tilted ruler at the tab](images/ruler-tab-tilted.jpg).
 
 Still needed: number of tabs and the gap between them (straight-on close-up), how far each tab sticks out, and **nozzle tip to the tab bottom** (move to `G1 Z50`, measure bed → tab bottom, subtract 50).
+
+### Tab gauge (`tab_gauge.stl`): print this before any saddle
+
+The scan can't give real dimensions (KIRI scale is arbitrary and it smooths small features), so measure the tab by fit. `tab_gauge.stl` is a 45 × 6 × 8 mm bar with six slots, 4 mm deep and 6 mm tall, open at the top:
+
+| Notches on the front | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|
+| Slot width (mm) | 2.0 | 2.3 | 2.6 | 2.9 | 3.2 | 3.6 |
+
+Print flat (as exported), 0.2 mm layers, no supports, about 5 minutes. Push each slot up over a tab from below. The **narrowest slot that slides on with light friction** is the pocket width. Then report the slot number, plus how far the tab sits inside the slot (that's how far it sticks out).
