@@ -35,3 +35,15 @@ The first layer is uniformly about 0.05 mm too high. Suggested (**ask Daniel bef
 - **Lines still visible with small gaps** in the squares and rings. The first layer is still slightly high everywhere. If this run already had a Z change, lower it about another 0.02–0.03. If not, the 0.05 suggestion above stands.
 - **Broken arcs outside the 110 mm ring** (skirt/outer pass) are segmented and incomplete near the edge: beyond the reliable area (glass edge or reach limit). Keep parts within about 100 mm, as noted.
 - Some stringing again across open areas (travel over empty bed).
+
+## Third run
+
+![Third run, top](images/reach-test-3-top.jpg)
+![Third run, close-up of the squares](images/reach-test-3-close.jpg)
+![Third run, overview with towers and clamps](images/reach-test-3-overview.jpg)
+
+- **Better than run 2:** the squares are more solid (lines closer together, fewer gaps), and the rings and spokes are cleaner, with less stringing.
+- **Still level:** all four squares look alike.
+- Lines are still slightly visible in the squares. Close to right, with maybe 0.01–0.02 mm left; fine-tune live with `SET_GCODE_OFFSET Z_ADJUST=-0.01 MOVE=1` on the next print, then `Z_OFFSET_APPLY_PROBE` (ask Daniel before `SAVE_CONFIG`).
+- The outer arcs past the 110 mm ring are still broken and segmented, beyond the reliable reach. That confirms the ~100 mm working circle.
+- The clamps are clear of the printed area.
