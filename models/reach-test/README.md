@@ -47,3 +47,14 @@ The first layer is uniformly about 0.05 mm too high. Suggested (**ask Daniel bef
 - Lines are still slightly visible in the squares. Close to right, with maybe 0.01–0.02 mm left; fine-tune live with `SET_GCODE_OFFSET Z_ADJUST=-0.01 MOVE=1` on the next print, then `Z_OFFSET_APPLY_PROBE` (ask Daniel before `SAVE_CONFIG`).
 - The outer arcs past the 110 mm ring are still broken and segmented, beyond the reliable reach. That confirms the ~100 mm working circle.
 - The clamps are clear of the printed area.
+
+## Real-print 110 mm test: `bar_110.stl`
+
+A flat bar 110 × 15 × 3 mm, with ruler ticks every 10 mm and a diamond notch near one end (the **gap end**).
+
+**Geometry note:** on a delta, any straight line through the centre runs from a **gap** (30°, 150°, 270°) to a **tower** (the opposite direction). So a 110 mm part centred on the bed reaches 55 mm toward a tower, where the effector rubs. **Shift it toward the gap instead:** for example along Y, from Y = −60 (front gap, 270°) to Y = +50 (toward tower C).
+
+1. Jog check first (probe clip off): `G28`, `G1 Z10 F3000`, `G1 X0 Y-60`, `G1 X0 Y50`. If nothing rubs, go ahead.
+2. In Cura, rotate the bar so its long axis runs front to back, notch end to the **front**, and set its position so it spans Y −60 … +50 (centre Y = −5 in printer coordinates). Check in the preview which way Cura's Y points.
+3. Print with the normal profile (2 walls, 20 % infill, 4 top/bottom layers). It's a realistic print with solid layers, walls and infill.
+4. Check: ends complete, equal thickness along the length (a ruler or calipers at both ends and the middle), and the 10 mm ticks measure correctly.
