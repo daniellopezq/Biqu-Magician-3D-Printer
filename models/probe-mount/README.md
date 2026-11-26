@@ -239,3 +239,22 @@ Rigid, square to the effector, clear of both rod ends. Next: check that the roll
 - The switch is pushed onto the pins, horizontal, lever pointing down. The roller sits off to one side of the nozzle, toward the switch's lever end, so **the old X/Y offsets and z_offset (13.15) are no longer valid**.
 
 `probe_clip_drop10_pin22.stl`: the same as drop10, but with **2.2 mm pins** (instead of 2.1) for a snugger grip on the switch's 2.3 mm holes.
+
+### Assembled clip dimensions (drop10 + switch, measured off the printer)
+
+Ruler readings from photos, ±0.5 mm:
+
+| Measurement | Value |
+|---|---|
+| Clip block thickness (lying flat) | about 7 mm (design 6.8) |
+| Switch body length | about 20 mm |
+| Roller beyond the switch body's edge | about 8–9 mm |
+| Clip block face to roller tip (side view) | about 25 mm |
+| Clip top edge to roller bottom | about 33 mm |
+
+Mounted, the roller hangs about 4 mm below the nozzle tip (see the drop10 tape photos above).
+
+| | |
+|---|---|
+| ![](images/clip-dims-1.jpg) | ![](images/clip-dims-2.jpg) |
+| ![](images/clip-dims-3.jpg) | ![](images/clip-dims-4.jpg) |
