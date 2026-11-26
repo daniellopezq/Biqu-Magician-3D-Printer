@@ -26,3 +26,12 @@ The first layer is uniformly about 0.05 mm too high. Suggested (**ask Daniel bef
    - **Live adjust during a first layer:** `SET_GCODE_OFFSET Z_ADJUST=-0.025 MOVE=1` (twice, or until the lines merge into a solid strip), then `Z_OFFSET_APPLY_PROBE`, then `SAVE_CONFIG`.
 3. The net change should be about **+0.05 mm on `z_offset`** (a larger z_offset puts the nozzle closer to the bed). Don't go more than 0.1 mm without a test print in between.
 4. Verify with `models/calibration-cube` or the reach test: the bottom should be one solid sheet with no lip.
+
+## Second run: rings plus four first-layer squares
+
+![Reach rings with four first-layer squares (centre and three around)](images/reach-test-2-squares.jpg)
+
+- **The four squares look alike:** same line spacing at the centre and at all three outer positions, so the **bed is level** (confirms the first run).
+- **Lines still visible with small gaps** in the squares and rings. The first layer is still slightly high everywhere. If this run already had a Z change, lower it about another 0.02–0.03. If not, the 0.05 suggestion above stands.
+- **Broken arcs outside the 110 mm ring** (skirt/outer pass) are segmented and incomplete near the edge: beyond the reliable area (glass edge or reach limit). Keep parts within about 100 mm, as noted.
+- Some stringing again across open areas (travel over empty bed).
