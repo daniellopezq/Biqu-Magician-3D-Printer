@@ -210,3 +210,7 @@ Daniel corrected the mounting logic: the clip pushes onto the tabs **horizontall
 **Estimates to check:** the tab centre height (27 mm above the nozzle) and the roller drop below the switch body (7 mm). The target is the roller about 5 mm below the nozzle tip. Being 2–3 mm off is fine, since `PROBE_CALIBRATE` measures the real offset; the roller only has to hang below the nozzle.
 
 Print the test block first. Then print the full clip lying on its back, plate face down, pins up.
+
+### `probe_clip_v2_test_pins.stl` (Daniel's idea)
+
+The v2 test block (it fits the tabs) with **two 2.1 mm pins, 9.5 mm apart, horizontal**, sticking out of its solid outer face at mid-height of the block. The switch goes straight onto the block, no plate. Roller height depends on where the block sits; check it hangs below the nozzle tip before probing.
