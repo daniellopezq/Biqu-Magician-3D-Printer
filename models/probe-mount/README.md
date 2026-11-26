@@ -159,3 +159,5 @@ Print flat (as exported), 0.2 mm layers, no supports, about 5 minutes. Push each
 **Gauge result 1:** even slot 6 (3.6 mm) only went halfway on, and needed force. The tab is **wider than 3.6 mm**, or it tapers (wider at the root). The photo estimate of 2–2.5 mm was wrong.
 
 **`tab_gauge_2.stl`:** slots 3.8, 4.1, 4.4, 4.7, 5.0, 5.4 mm (1–6 notches), 6 mm deep, 7 mm tall.
+
+**Gauge result 2:** slot 1 (**3.8 mm**) slides fully on, snug. Since 3.6 mm only went halfway with force, **use 3.8 mm as the pocket width** (printed holes run slightly undersized, so the tab itself is probably about 3.6–3.7 mm). The tab fits fully in a slot 6 mm deep and 7 mm tall, so it sticks out less than 6 mm and hangs less than 7 mm.
