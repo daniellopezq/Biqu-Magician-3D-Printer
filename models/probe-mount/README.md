@@ -195,3 +195,5 @@ The same clip, but instead of M2 screws in slots, the plate has **two 2.1 mm pin
 
 - **No height adjustment:** the roller is fixed at about 4 mm below the nozzle tip, assuming the standard switch dimensions (hole pitch 9.5, holes 7.1 mm above the lever face, roller about 6 mm below the lever face). Check the roller with `QUERY_PROBE` and the paper test. If it ends up too high or low, `PROBE_CALIBRATE` takes care of the Z offset; it only needs to hang 3–5 mm below the nozzle so the nozzle doesn't touch the glass first.
 - **Print lying on its back** (plate face down, pins pointing up), so the pins print as round columns, which is the strongest direction for them.
+
+**Switch checked from a photo** ([switch-holes.jpg](images/switch-holes.jpg)): the holes sit near the **terminal** edge, about 2.4 mm below it (so about 7.6 mm above the lever face), and about 9.4 mm apart (9.5 is assumed). `hole_act` is updated to 7.6 and the STLs regenerated.

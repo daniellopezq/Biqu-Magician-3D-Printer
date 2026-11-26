@@ -21,7 +21,7 @@ margin    = 2.5
 floor_t   = 2.0
 plate_t   = 4.0
 sw_l, sw_h, sw_t = 20, 10, 6.4
-roller_below, roller_drop, hole_act, travel = 4, 6, 7.1, 8
+roller_below, roller_drop, hole_act, travel = 4, 6, 7.6, 8   # hole_act from switch photo: holes ~2.4 mm below the terminal face, pitch ~9.4
 slot_w, nut_af, nut_d = 2.4, 4.3, 1.8
 
 cx = [-(tab_gap+pocket_w)/2, (tab_gap+pocket_w)/2]          # tab centres
