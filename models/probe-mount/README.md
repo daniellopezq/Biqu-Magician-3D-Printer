@@ -197,3 +197,5 @@ The same clip, but instead of M2 screws in slots, the plate has **two 2.1 mm pin
 - **Print lying on its back** (plate face down, pins pointing up), so the pins print as round columns, which is the strongest direction for them.
 
 **Switch checked from a photo** ([switch-holes.jpg](images/switch-holes.jpg)): the holes sit near the **terminal** edge, about 2.4 mm below it (so about 7.6 mm above the lever face), and about 9.4 mm apart (9.5 is assumed). `hole_act` is updated to 7.6 and the STLs regenerated.
+
+**Correction after the test print:** the pocket spacing was too wide. The gap between the tabs equals gauge 2's **1 mm side wall**, not the 4 mm end wall. So gauge 2 sat with its 3.8 mm slot width **across** the tab (radial) and its 6 mm slot depth **along** the face. The pockets are now 6.0 mm along the face × 3.8 mm radial, with a **1 mm wall between them**, the same as the gauge.

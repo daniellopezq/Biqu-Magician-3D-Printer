@@ -8,14 +8,14 @@ B = m.Manifold.cube
 def box(x0,x1,y0,y1,z0,z1): return B([x1-x0,y1-y0,z1-z0]).translate([x0,y0,z0])
 
 # measured (gauges + ruler at G1 Z50)
-pocket_w  = 3.8    # gauge 2 slot 1: snug, fully on
-tab_gap   = 4.0    # edge to edge
+pocket_w  = 6.0    # along the face: gauge 2 slot depth (tab fit fully)
+tab_gap   = 1.0    # edge to edge = gauge 2's 1 mm side wall (Daniel, test fit)
 band_z    = 29.5   # band underside above nozzle tip: ruler 76 mm + 3.5 mm unmarked ruler end = 79.5 mm at Z50
 tab_h     = 3.5    # estimate, pockets made 1 mm deeper
 # design
 pocket_d  = tab_h + 1.0
 wall_out  = 2.0    # wall outside the tabs
-pocket_in = 6.0    # closed pocket, inward depth: same as gauge 2 (tab fit fully)
+pocket_in = 3.8    # radial: gauge 2 slot 1 width, snug
 wall_in   = 1.0    # inner wall, same as gauge 2 (it fit behind the tab)
 margin    = 2.5
 floor_t   = 2.0
