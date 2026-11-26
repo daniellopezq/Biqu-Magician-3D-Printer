@@ -161,3 +161,7 @@ Print flat (as exported), 0.2 mm layers, no supports, about 5 minutes. Push each
 **`tab_gauge_2.stl`:** slots 3.8, 4.1, 4.4, 4.7, 5.0, 5.4 mm (1–6 notches), 6 mm deep, 7 mm tall.
 
 **Gauge result 2:** slot 1 (**3.8 mm**) slides fully on, snug. Since 3.6 mm only went halfway with force, **use 3.8 mm as the pocket width** (printed holes run slightly undersized, so the tab itself is probably about 3.6–3.7 mm). The tab fits fully in a slot 6 mm deep and 7 mm tall, so it sticks out less than 6 mm and hangs less than 7 mm.
+
+**2 tabs** confirmed. ![Gauge 2 seated on one tab, the second tab just beside it](images/gauge2-on-tab.jpg)
+
+**`tab_spacing_gauge.stl`:** six blocks, each with two 3.8 mm pockets at edge-to-edge gaps of 2, 3, 4, 5, 6 and 7 mm (1–6 notches). The block that seats on both tabs at once gives the spacing.
