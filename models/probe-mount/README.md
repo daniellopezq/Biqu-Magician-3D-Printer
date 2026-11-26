@@ -229,3 +229,11 @@ Fitted on the printer, the roller sat too high. These are the same clip and pins
 ![Same, with a tape measure](images/probe-clip-mounted-tape.jpg)
 
 Rigid, square to the effector, clear of both rod ends. Next: check that the roller is 3–5 mm below the nozzle tip (`G1 Z10`, then measure bed → roller bottom: about 5–7 mm is right), then `QUERY_PROBE`, the dot-method X/Y offsets, `PROBE_CALIBRATE` and `DELTA_CALIBRATE`.
+
+## FINAL: `probe_clip_drop10.stl` is the one in use
+
+![Tape case on the glass, hook on the nozzle: about 93–94 mm](images/probe-drop10-nozzle-tape.jpg)
+![Tape case on the glass, hook on the roller: about 89–90 mm](images/probe-drop10-roller-tape.jpg)
+
+- The roller hangs **about 4 mm below the nozzle tip** (the drop8 version gave about 3 mm, too tight).
+- The switch is pushed onto the pins, horizontal, lever pointing down. The roller sits off to one side of the nozzle, toward the switch's lever end, so **the old X/Y offsets and z_offset (13.15) are no longer valid**.
