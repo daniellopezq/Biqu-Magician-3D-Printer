@@ -211,8 +211,10 @@ Daniel corrected the mounting logic: the clip pushes onto the tabs **horizontall
 
 Print the test block first. Then print the full clip lying on its back, plate face down, pins up.
 
-### `probe_clip_v2_test_pins.stl` (Daniel's idea)
+### `probe_clip_v2_test_pins.stl` (Daniel's design)
 
-The v2 test block (it fits the tabs) with **two 2.1 mm pins, 9.5 mm apart, horizontal**, on the **inner face of the lower part** (the same side the clip block sticks out), 2.4 mm below the block. They point toward the nozzle. The switch tucks under the block, terminal edge against the block's underside, lever pointing down. Exported **flat side down, pins up**: the whole outer face is flat, so **no supports** are needed. Check the roller hangs below the nozzle tip before probing.
+Just the v2 clip block (18 × 6.8 × 6.5 mm; its two pockets fit the tabs), **no lower part**. **Two 2.1 mm pins, 9.5 mm apart**, stick straight out of the face **behind the tab pockets** (opposite the pocket openings), centred across the block's thickness. The switch's flat face sits against that face.
+
+Exported with the **pocket openings on the bed and the pins pointing up**: no supports needed, and the pins print as round columns.
 
 **Confirmed by test print:** pin size (2.1 mm) and spacing (9.5 mm) fit the switch perfectly.
