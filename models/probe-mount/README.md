@@ -165,3 +165,7 @@ Print flat (as exported), 0.2 mm layers, no supports, about 5 minutes. Push each
 **2 tabs** confirmed. ![Gauge 2 seated on one tab, the second tab just beside it](images/gauge2-on-tab.jpg)
 
 **`tab_spacing_gauge.stl`:** six blocks, each with two 3.8 mm pockets at edge-to-edge gaps of 2, 3, 4, 5, 6 and 7 mm (1–6 notches). The block that seats on both tabs at once gives the spacing.
+
+**Tab gap: about 4 mm edge to edge.** Daniel: the gap between the tabs equals the gauge's wall. In gauge 2, slot 1 sits 4 mm from the end and the slots are 4 mm apart, so the gap is about 4 mm. Block 3 of the spacing gauge (3 notches, 4 mm) should confirm it.
+
+So far: **2 tabs, pocket 3.8 mm wide, gap 4 mm (tab centres about 7.8 mm apart), tab sticks out < 6 mm, hangs < 7 mm.** Still needed: nozzle tip to tab bottom.
