@@ -218,3 +218,7 @@ Just the v2 clip block (18 × 6.8 × 6.5 mm; its two pockets fit the tabs), **no
 Exported with the **pocket openings on the bed and the pins pointing up**: no supports needed, and the pins print as round columns.
 
 **Confirmed by test print:** pin size (2.1 mm) and spacing (9.5 mm) fit the switch perfectly.
+
+### Lowered versions: `probe_clip_drop5.stl`, `probe_clip_drop8.stl`, `probe_clip_drop10.stl`
+
+Fitted on the printer, the roller sat too high. These are the same clip and pins, but the block is extended on one side by 5, 8 or 10 mm, with the pins moved to the end of the extension, so the switch sits that much lower. Mount it with the **extension hanging down**: the clip fits the tabs either way up. Same print orientation: pocket openings down, pins up, no supports.
