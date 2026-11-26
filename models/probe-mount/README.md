@@ -199,3 +199,14 @@ The same clip, but instead of M2 screws in slots, the plate has **two 2.1 mm pin
 **Switch checked from a photo** ([switch-holes.jpg](images/switch-holes.jpg)): the holes sit near the **terminal** edge, about 2.4 mm below it (so about 7.6 mm above the lever face), and about 9.4 mm apart (9.5 is assumed). `hole_act` is updated to 7.6 and the STLs regenerated.
 
 **Correction after the test print:** the pocket spacing was too wide. The gap between the tabs equals gauge 2's **1 mm side wall**, not the 4 mm end wall. So gauge 2 sat with its 3.8 mm slot width **across** the tab (radial) and its 6 mm slot depth **along** the face. The pockets are now 6.0 mm along the face × 3.8 mm radial, with a **1 mm wall between them**, the same as the gauge.
+
+## Clip v3: tabs go in from the side, lever points down (`side_clip_v3.py`)
+
+Daniel corrected the mounting logic: the clip pushes onto the tabs **horizontally**, and the switch hangs **vertically** with the lever/roller pointing down.
+
+- `probe_clip_v3_test.stl`: just the block, 17 × 8.5 × 7.8 mm. Two pockets open on the face that touches the effector: **6.0 mm wide × 3.8 mm tall, 6.5 mm deep, 1 mm wall between them**.
+- `probe_clip_v3.stl`: block plus a vertical plate hanging below it, with **two 2.1 mm pins 9.5 mm apart (vertical)** for the switch. The switch body runs vertically from 2 to 22 mm above the nozzle tip, roller at the bottom, terminals toward +X.
+
+**Estimates to check:** the tab centre height (27 mm above the nozzle) and the roller drop below the switch body (7 mm). The target is the roller about 5 mm below the nozzle tip. Being 2–3 mm off is fine, since `PROBE_CALIBRATE` measures the real offset; the roller only has to hang below the nozzle.
+
+Print the test block first. Then print the full clip lying on its back, plate face down, pins up.
