@@ -213,4 +213,4 @@ Print the test block first. Then print the full clip lying on its back, plate fa
 
 ### `probe_clip_v2_test_pins.stl` (Daniel's idea)
 
-The v2 test block (it fits the tabs) with **two 2.1 mm pins, 9.5 mm apart, horizontal**, sticking out of its solid outer face at mid-height of the block. The switch goes straight onto the block, no plate. Roller height depends on where the block sits; check it hangs below the nozzle tip before probing.
+The v2 test block (it fits the tabs) with **two 2.1 mm pins, 9.5 mm apart, horizontal**, on the **inner face of the lower part** (the same side the clip block sticks out), 2.4 mm below the block. They point toward the nozzle. The switch tucks under the block, terminal edge against the block's underside, lever pointing down. Exported **flat side down, pins up**: the whole outer face is flat, so **no supports** are needed. Check the roller hangs below the nozzle tip before probing.
