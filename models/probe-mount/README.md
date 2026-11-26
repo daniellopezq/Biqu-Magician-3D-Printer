@@ -237,3 +237,5 @@ Rigid, square to the effector, clear of both rod ends. Next: check that the roll
 
 - The roller hangs **about 4 mm below the nozzle tip** (the drop8 version gave about 3 mm, too tight).
 - The switch is pushed onto the pins, horizontal, lever pointing down. The roller sits off to one side of the nozzle, toward the switch's lever end, so **the old X/Y offsets and z_offset (13.15) are no longer valid**.
+
+`probe_clip_drop10_pin22.stl`: the same as drop10, but with **2.2 mm pins** (instead of 2.1) for a snugger grip on the switch's 2.3 mm holes.
