@@ -325,3 +325,21 @@ The earlier first-layer problems (gaps between lines, lip around the bottom edge
 - Zits where each arc meets the frame (seams, line starts and stops): tune pressure advance, set the seam to "sharpest corner".
 - Light stringing between the arcs: about 1 mm more retraction, or 5 °C cooler.
 - Rough, gappy top on the handle: add one top layer.
+
+### Future: bigger glass, larger non-circular print area (to do)
+
+**Finding (reach test):** at a 110 mm circle the effector rubs lightly against a **tower belt**. The safe circle is about **100 mm** (radius 50). A delta's real reach isn't a circle, though: toward a tower it's limited by that tower's belt and carriage, while **between two towers** it reaches farther. The usable shape is a rounded triangle or hexagon.
+
+The current glass is about 120 mm across, and its clamps limit things anyway. **When a bigger glass is fitted**, use the extra reach between the towers:
+
+1. **Measure the limits** (probe clip removed, `G28`, `G1 Z10`, step out 1–2 mm at a time, stop at the first rub, back off 2 mm):
+   - toward each tower: C at 90° (+Y), A at 210°, B at 330°. Currently about 50.
+   - between towers: 270° (`G1 X0 Y-..`), 30° and 150°.
+2. **Klipper:** `print_radius` = the between-towers limit. Klipper only knows a circle, so it will then allow moves toward the towers that are too far out. The slicer must prevent those.
+3. **Cura:** bed = the bigger circle (elliptic, origin at center), plus **three `machine_disallowed_areas` wedges**, one in front of each tower, in the printer's definition file (not editable in the Machine Settings dialog). Parts can't be placed in the gray wedges.
+4. Keep the glass clamps outside the new circle, or between the towers.
+5. Rerun `DELTA_CALIBRATE` with a larger `radius` to cover the new area (mind the probe offset), and print `models/reach-test` scaled to the new size.
+
+**Risk:** G-code from another slicer, or a part placed in a wedge, can drive the effector into a belt. Klipper won't stop it. It's a light rub, not a crash.
+
+**Until then:** Cura bed 110 mm elliptic. Keep parts within about 100 mm.
