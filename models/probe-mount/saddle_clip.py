@@ -47,11 +47,24 @@ for x in hole_x:
     cuts += [slot, box(x-nut_af/2, x+nut_af/2, py0-1, py0+nut_d, hole_z-L/2-nut_af/2, hole_z+L/2+nut_af/2)]
 body = clip + plate + gusset
 for c in pockets + cuts: body = body - c
+# screwless version: two pins through the switch holes instead of slots + screws
+pin_d = 2.1                      # switch holes are 2.3 (standard SS-5 subminiature)
+pin_len = sw_t + 0.8             # through the switch body, a little extra to melt into a rivet head
+fz = -roller_below + roller_drop + hole_act   # fixed hole height (roller 4 mm below the tip)
+fpz0 = fz - 6
+plate_p = box(-px, px, py0, py1, fpz0, z_bot + 0.01)
+pins = None
+for x in hole_x:
+    pin = m.Manifold.cylinder(pin_len, pin_d/2, pin_d/2, 32).rotate([-90,0,0]).translate([x, py1 - 0.01, fz])
+    pins = pin if pins is None else pins + pin
+body_pins = clip + plate_p + gusset + pins
+for c in pockets: body_pins = body_pins - c
 
 def save(b, f):
     me = b.to_mesh(); t = trimesh.Trimesh(me.vert_properties[:,:3], me.tri_verts)
     t.apply_translation([0,0,-t.bounds[0][2]]); t.export(f); print(f, t.extents.round(1), t.is_watertight)
 save(body, "probe_clip_v2.stl")
+save(body_pins, "probe_clip_v2_pins.stl")
 test = clip + box(-half, half, wall_out-2, wall_out, z_bot-8, z_bot+0.01)
 for c in pockets: test = test - c
 save(test, "probe_clip_v2_test.stl")
