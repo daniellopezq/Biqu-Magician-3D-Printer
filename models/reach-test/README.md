@@ -61,3 +61,7 @@ A flat bar 110 × 20 × 3 mm with quality features along its length, so you can 
 2. In Cura, rotate the bar so its long axis runs front to back, **GAP** end to the **front**, and set its position so it spans Y −60 … +50 (centre Y = −5 in printer coordinates). Check in the preview which way Cura's Y points.
 3. Print with the normal profile (2 walls, 20 % infill, 4 top/bottom layers). It's a realistic print with solid layers, walls and infill.
 4. Check: ends complete, equal thickness along the length (a ruler or calipers at both ends and the middle), and the numbers are spaced 10 mm, the zigzag corners look the same along the bar, and the holes stay round and equal (check one with a 3 mm drill bit).
+
+### `bar_105.stl`
+
+The same test bar at **105 mm**, a safer step before 110. Same features (numbers 0–10 from the gap end, zigzag, 3 mm holes, GAP/TWR labels). Place it **GAP end to the front, spanning Y −57.5 … +47.5** (centre Y = −5). Jog check first: `G1 Z10`, `G1 X0 Y-57.5`, `G1 X0 Y47.5`.
