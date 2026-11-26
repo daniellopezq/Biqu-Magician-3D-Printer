@@ -15,7 +15,8 @@ tab_h     = 3.5    # estimate, pockets made 1 mm deeper
 # design
 pocket_d  = tab_h + 1.0
 wall_out  = 2.0    # wall outside the tabs
-pocket_in = 4.6    # pocket depth inward (open on the inner side; tab is < 6 mm thick)
+pocket_in = 6.0    # closed pocket, inward depth: same as gauge 2 (tab fit fully)
+wall_in   = 1.0    # inner wall, same as gauge 2 (it fit behind the tab)
 margin    = 2.5
 floor_t   = 2.0
 plate_t   = 4.0
@@ -26,8 +27,8 @@ slot_w, nut_af, nut_d = 2.4, 4.3, 1.8
 cx = [-(tab_gap+pocket_w)/2, (tab_gap+pocket_w)/2]          # tab centres
 half = (tab_gap/2 + pocket_w + margin)
 z_top, z_bot = band_z, band_z - pocket_d - floor_t
-clip = box(-half, half, -pocket_in, wall_out, z_bot, z_top)
-pockets = [box(c-pocket_w/2, c+pocket_w/2, -pocket_in-1, 0.15, z_top-pocket_d, z_top+1) for c in cx]
+clip = box(-half, half, -pocket_in-wall_in, wall_out, z_bot, z_top)
+pockets = [box(c-pocket_w/2, c+pocket_w/2, -pocket_in, 0, z_top-pocket_d, z_top+1) for c in cx]
 
 # switch plate hangs from the outer wall, switch on its OUTER face (clear of the heater)
 act_z  = -roller_below + roller_drop          # lever face of the switch body
@@ -36,7 +37,7 @@ pz0 = hole_z - travel/2 - slot_w/2 - 2.5
 px = sw_l/2 + 1.5
 py0, py1 = wall_out - plate_t, wall_out
 plate = box(-px, px, py0, py1, pz0, z_bot + 0.01)
-gusset = (box(-half, half, -pocket_in, wall_out, z_bot, z_bot+0.01) + box(-px, px, py0, py1, z_bot-5, z_bot-4.99)).hull()
+gusset = (box(-half, half, -pocket_in-wall_in, wall_out, z_bot, z_bot+0.01) + box(-px, px, py0, py1, z_bot-5, z_bot-4.99)).hull()
 hole_x = [-sw_l/2 + 5.25, -sw_l/2 + 14.75]
 cuts = []
 for x in hole_x:
