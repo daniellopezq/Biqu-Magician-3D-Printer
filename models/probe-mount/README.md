@@ -222,3 +222,10 @@ Exported with the **pocket openings on the bed and the pins pointing up**: no su
 ### Lowered versions: `probe_clip_drop5.stl`, `probe_clip_drop8.stl`, `probe_clip_drop10.stl`
 
 Fitted on the printer, the roller sat too high. These are the same clip and pins, but the block is extended on one side by 5, 8 or 10 mm, with the pins moved to the end of the extension, so the switch sits that much lower. Mount it with the **extension hanging down**: the clip fits the tabs either way up. Same print orientation: pocket openings down, pins up, no supports.
+
+### Mounted (lowered clip)
+
+![Clip on the tabs, switch on the pins, roller hanging below the effector](images/probe-clip-mounted-front.jpg)
+![Same, with a tape measure](images/probe-clip-mounted-tape.jpg)
+
+Rigid, square to the effector, clear of both rod ends. Next: check that the roller is 3–5 mm below the nozzle tip (`G1 Z10`, then measure bed → roller bottom: about 5–7 mm is right), then `QUERY_PROBE`, the dot-method X/Y offsets, `PROBE_CALIBRATE` and `DELTA_CALIBRATE`.
