@@ -81,3 +81,11 @@ The same test bar at **105 mm**, a safer step before 110. Same features (numbers
 - **Three squares (centre, back, right) are good:** solid, lines fused, even. The first-layer height is now about right at these spots.
 - **The front-left square is clearly different:** separate, rounded lines with gaps (too high there) and a blob with a curl at its corner. Front-left is toward **tower A**. Either the bed is slightly low on that side, or (more likely, since earlier runs were even) the **glass moved or is lifted near the front-left clamp** (the old foam tape sliding). Re-check after fitting the v2 clamps. If it persists, run `DELTA_CALIBRATE` again.
 - Stringing on travel between squares: normal for a sparse test. Retraction can be tuned later.
+
+## First-layer squares, run 5
+
+![Four first-layer squares, run 5](images/first-layer-squares-5.jpg)
+
+- **The front-left square is much better** than run 4: solid, with lines fused. The bed is even again on that side.
+- **Back and right squares are good.** The centre square is good, with some strings and a curl on top (travel).
+- Overall the first layer is close to right and consistent across the bed. The remaining issue is **stringing on travel moves**: try retraction 6.5 → 7 mm, or 5 °C cooler (200 °C), and enable "Retract at Layer Change".
