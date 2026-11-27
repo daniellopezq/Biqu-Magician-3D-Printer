@@ -65,3 +65,10 @@ A flat bar 110 × 20 × 3 mm with quality features along its length, so you can 
 ### `bar_105.stl`
 
 The same test bar at **105 mm**, a safer step before 110. Same features (numbers 0–10 from the gap end, zigzag, 3 mm holes, GAP/TWR labels). Place it **GAP end to the front, spanning Y −57.5 … +47.5** (centre Y = −5). Jog check first: `G1 Z10`, `G1 X0 Y-57.5`, `G1 X0 Y47.5`.
+
+## Decision (bar tests)
+
+- **The 110 mm bar printed cleanly** when shifted toward the front gap (Y −60 … +50).
+- **105 mm is the new default** print diameter (centred parts).
+- **110 mm only for parts shifted toward a gap** (30°, 150°, 270°), never centred.
+- **Cura bed: 108 mm elliptic, origin at centre.** Cura keeps a small margin inside the edge, so centred parts end up about 105 mm. A part pushed to Cura's edge toward a tower can still reach about 54 mm from the centre, close to the ~55 mm belt rub, so keep big parts centred or toward a gap.
