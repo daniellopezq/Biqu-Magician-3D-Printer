@@ -72,3 +72,12 @@ The same test bar at **105 mm**, a safer step before 110. Same features (numbers
 - **105 mm is the new default** print diameter (centred parts).
 - **110 mm only for parts shifted toward a gap** (30°, 150°, 270°), never centred.
 - **Cura bed: 108 mm elliptic, origin at centre.** Cura keeps a small margin inside the edge, so centred parts end up about 105 mm. A part pushed to Cura's edge toward a tower can still reach about 54 mm from the centre, close to the ~55 mm belt rub, so keep big parts centred or toward a gap.
+
+## First-layer squares, run 4
+
+![Four first-layer squares](images/first-layer-squares-4a.jpg)
+![Close-up](images/first-layer-squares-4b.jpg)
+
+- **Three squares (centre, back, right) are good:** solid, lines fused, even. The first-layer height is now about right at these spots.
+- **The front-left square is clearly different:** separate, rounded lines with gaps (too high there) and a blob with a curl at its corner. Front-left is toward **tower A**. Either the bed is slightly low on that side, or (more likely, since earlier runs were even) the **glass moved or is lifted near the front-left clamp** (the old foam tape sliding). Re-check after fitting the v2 clamps. If it persists, run `DELTA_CALIBRATE` again.
+- Stringing on travel between squares: normal for a sparse test. Retraction can be tuned later.
