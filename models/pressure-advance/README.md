@@ -24,11 +24,11 @@ A close-up photo of one corner with a ruler next to it makes it easy to double-c
 
 ## Result (Klipper square_tower, 100 mm/s, START=0 FACTOR=.020)
 
-**`pressure_advance: 0.55`**
+**`pressure_advance: 0.50`** (set on the server 2026-11-25; 0.55 was the first suggestion)
 
 - First attempt (the 40 mm cube) printed at about 30 mm/s because Cura's wall speeds stayed low, and the effect was invisible. **The wall speeds themselves must be high**, not just Print Speed.
 - Second attempt: Klipper's own `square_tower.stl` at 100 mm/s. Corners are clean at the bottom. From **about 33–36 mm** (measured on four corners) they show dotted gaps after the corner, which means too much PA. Some corners stay clean higher: on a delta each corner uses a different motor mix, so go by the worst one.
-- Chosen: about 28 mm × 0.020 = **0.55** (a margin below the worst corner). If small parts show gaps after corners, drop to 0.45–0.50. If corners bulge, try 0.60.
+- Suggested first: about 28 mm × 0.020 = 0.55. **Set: 0.50**, a little more margin, since the bottom corners were already clean (no bulging even at PA 0) and photo readings are only good to 1-2 mm. If small parts show gaps after corners, drop to 0.45. If corners bulge, try 0.55–0.60.
 - Note: this ruler's 0 is about 3.5 mm above its end. Heights above include that offset.
 
 ![Corner, bottom at the brim ear: clean up to about 31 mm, gaps above about 34 mm](images/pa-corner-1.jpg)
@@ -36,4 +36,4 @@ A close-up photo of one corner with a ruler next to it makes it easy to double-c
 ![Corner: clean up to about 38 mm (best corner)](images/pa-corner-3.jpg)
 ![Overview](images/pa-tower-overview.jpg)
 
-**For the server session:** under `[extruder]` in `printer.cfg`, set `pressure_advance: 0.55`, then `RESTART`. Ask Daniel before saving.
+Done on the server: `pressure_advance: 0.50` under `[extruder]`, Klipper restarted (PA 0.5, accel 1500, SCV 5 confirmed).

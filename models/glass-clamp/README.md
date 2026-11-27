@@ -15,3 +15,6 @@ Fit: measure the glass with calipers, print one of the matching size, and test. 
 ### Foam-tape versions: `glass-clamp-v2-foam-lip28.stl`, `-foam-lip32.stl`
 
 For the BAZIC 981 double-sided foam mounting tape (thickness not printed on the pack, typically about 1–1.6 mm). The lip sits 2.8 / 3.2 mm above the acrylic, which over ~2.0 mm glass leaves room for the foam squeezed about 20 %. No ridge under the lip; the foam is the contact. The slot is 1 mm longer, so the riser can reach the glass edge. Measure the tape (calipers, or stack 5 layers on a ruler and divide by 5): about 1.0 mm → lip28, about 1.4–1.6 mm → lip32. The riser must still touch the glass edge. That's what stops sliding; the foam only holds down.
+
+## Correction: real contact height of lip18/20/22
+In the STLs a 0.3 mm ridge sits under each lip, so the ridge touches first, at **1.5 / 1.7 / 1.9 mm** above the acrylic (not 1.8 / 2.0 / 2.2). For glass of about 2.0 mm, lip22 is the nearest. The lip reaches about 3.5 mm over the glass. There is no `.scad` source for the v2 clamps in the repo.

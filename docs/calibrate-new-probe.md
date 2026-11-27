@@ -45,3 +45,11 @@ Mark a dot near the centre. Nozzle over the dot gives X1/Y1, roller over the dot
 The probe hangs about 4 mm below the nozzle and will hit prints. Remove the clip after calibrating.
 
 After that: pressure advance (`models/pressure-advance/README.md`).
+
+## Findings from the first attempt (2026-11-26). Read before probing.
+- **Pin:** `^P1.28` is correct (free = open, pressed = TRIGGERED). The `^!P1.28` above would invert it.
+- **The free roller hangs well below the height where it triggers** (lever travel). Moving sideways at Z 5 dragged it on the glass. Travel at Z 15 or higher (30 was used).
+- **Trigger margin is thin:** at the centre, a stepped check triggered between Z 1.9 and 2.0 and `PROBE_ACCURACY` at about 1.66, with nozzle paper contact at about -0.30 on the setup at that time: roughly 2 mm. Check this slowly before any automatic probing.
+- **Offsets, lined up by eye:** about `x_offset: -15`, `y_offset: -30`. Not saved to the config; measure again after any change to the clip.
+- **Readings did not repeat between visits** (centre moved by up to about 0.4 mm after the head had been elsewhere), while back-to-back taps mostly agreed within 0.06 mm. Afterwards the switch was found **rocking on its pins**. That is the likely cause, not yet confirmed by a retest. Secure the switch (or try `probe_clip_drop10_pin22.stl`) and repeat a centre / elsewhere / centre test first.
+- `Z_OFFSET_APPLY_PROBE` and the probe `z_offset` do not move the printing height on this delta.

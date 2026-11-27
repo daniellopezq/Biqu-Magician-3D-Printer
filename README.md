@@ -41,7 +41,7 @@ A second print, a 40 mm figure with tree supports, also came out fine ([settings
 
 <img src="docs/images/compare-cube-top-z.jpg" alt="10 mm cube tops: stock Smoothieware left, Klipper right" width="320">
 
-Next: fix the first-layer height, calibrate the extruder and pressure advance, redo the Z height on the glass bed, and print a proper removable probe mount.
+Next: fix the first-layer height, redo the Z height on the glass bed, and print a proper removable probe mount.
 
 ## License
 

@@ -1,0 +1,18 @@
+# Webcam for Mainsail: Logitech C505 on the Klipper host, MJPEG at http://<host>:8080/?action=stream
+# Install: sudo apt install ustreamer && sudo cp ustreamer.service /etc/systemd/system/ \
+#          && sudo systemctl enable --now ustreamer
+[Unit]
+Description=ustreamer webcam for Mainsail (Logitech C505)
+After=network-online.target
+
+[Service]
+User=movies
+SupplementaryGroups=video
+ExecStart=/usr/bin/ustreamer --device=/dev/v4l/by-id/usb-046d_C505_HD_Webcam_5A0DAE80-video-index0 \
+    --host=0.0.0.0 --port=8080 --resolution=1280x720 --format=MJPEG --encoder=HW --desired-fps=15 \
+    --device-timeout=5 --slowdown
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

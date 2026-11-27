@@ -85,12 +85,63 @@ The 120 mm glass plate now sits on the acrylic, held by three printed slotted cl
 
 First layer on the glass: 215 C for layer 1, then 205 C, 15 mm/s, thin glue stick. The bottom still shows slightly separate lines, so a little more Z may follow.
 
+## Slicing with Cura (Windows) (2026-11-25)
+
+PrusaSlicer CLI on the host still works ([`klipper/slicer/magician-pla-cube.ini`](../klipper/slicer/magician-pla-cube.ini)); Cura 5.x on a Windows laptop is the everyday slicer. First Cura prints (a tab gauge, ~28 min, then a larger v2) came out fine.
+
+**Machine (Custom FFF printer):** 110 x 110 mm, height 140, **elliptic** plate, **origin at center**, no heated bed, G-code flavor Marlin, nozzle 0.4, filament 1.75.
+
+Start G-code:
+
+```
+G21
+G90
+M82
+G28
+M104 S{material_print_temperature_layer_0}
+M109 S{material_print_temperature_layer_0}
+G92 E0
+G1 Z5 F1500
+```
+
+End G-code: `M104 S0`, `G91`, `G1 E-3 F1800`, `G1 Z20 F1200`, `G90`, `G1 X0 Y0 F3000`, `M84`.
+
+**Profile (same as the PrusaSlicer one):** layer 0.2, first layer 0.3, line width 0.4, 2 walls, 4 top/bottom, 20 % grid; 205 °C (first layer 215), plate 0; walls 15 mm/s, infill 30, first layer 15, travel 60 (100 made a messy first layer); retraction 6.5 mm at 25 mm/s (Bowden); fan 100 % (Cura's M106 is ignored by a macro anyway: the only fan output is the heatsink fan); skirt 2 lines.
+
+**Sending files:** Cura Marketplace plugin *Moonraker Connection*, address `http://<host>:7125` (no API key from a `trusted_clients` subnet). Turn off "start print after upload" and start the print from Mainsail: starting through Moonraker has hung before. Saving the .gcode and dragging it into Mainsail works too.
+
+## Webcam (2026-11-25)
+
+Logitech C505 (720p, fixed focus, needs about 30 cm or more to be sharp), streamed with ustreamer as MJPEG on port 8080 ([`klipper/ustreamer.service`](../klipper/ustreamer.service)), added to Mainsail as webcam "Printer" (`/?action=stream`, snapshot `/?action=snapshot`). The webcam entry lives in Moonraker's database (added with `POST /server/webcams/item`), not in `moonraker.conf`.
+
+**Position for print monitoring:** in front of the gap between towers A and B, about 10-15 cm above the bed, looking down at the glass. Bed level or beside a tower hides flat prints; too close cuts the nozzle off and goes out of focus; from above the effector hides the part. Light from the front avoids glare on the glass. The BIQU logo under the clear glass makes flat first layers hard to see. At this distance it is about 0.2 mm per pixel: good for catching failures (spaghetti, a part coming loose), not for judging surface quality. Failure detection: self-hosted Obico (2026-11-26), see below.
+
+## Obico failure detection (2026-11-26)
+
+- **Server:** [obico-server](https://github.com/TheSpaghettiDetective/obico-server) in Docker on the Klipper host (`sudo docker compose up -d --build`, web UI on port 3334). Built with no print running: the local image build pins all CPU threads and Klipper is timing-sensitive. Opening it by LAN IP gave a 500 until the address was added as a site: `docker compose exec web ./manage.py site --add <host>:3334`. The install creates an admin `root@example.com`; set its password with `./manage.py changepassword root@example.com`.
+- **Printer side:** [moonraker-obico](https://github.com/TheSpaghettiDetective/moonraker-obico) `./install.sh`, server `http://<host>:3334`, linked with the 6-digit code ("Klipper generic - self-installed"). It adds `[include moonraker_obico_macros.cfg]` to `printer.cfg` and `[include moonraker-obico-update.cfg]` to `moonraker.conf`. In `moonraker-obico.cfg`, `[tunnel] dest_port = 8100` (Mainsail's port).
+- The installer runs `apt-get update` and stops on any broken apt source (here an old Plex repo).
+- Without Janus / a hardware H.264 encoder the Obico web view refreshes about every 10 s; detection uses those snapshots. Pausing uses Mainsail's PAUSE, which parks a delta at the back (y = max - 5) after a 2 mm lift.
+
+## Pressure advance (2026-11-25)
+
+**`pressure_advance: 0.50`** in `[extruder]`. Tuned with Klipper's `square_tower.stl` sliced by PrusaSlicer ([`klipper/slicer/magician-pa-tower.ini`](../klipper/slicer/magician-pa-tower.ini): 100 mm/s walls, 0.2 mm layers, 215 C; the start G-code runs `SET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=1 ACCEL=500` and `TUNING_TOWER COMMAND=SET_PRESSURE_ADVANCE PARAMETER=ADVANCE START=0 FACTOR=.020`).
+
+- Corners showed no bulging even at PA 0, so the tower only gave an upper limit: dotted gaps after the corner from about 33-35 mm on the worst corner (PA 0.66-0.70), 40 mm on the best (a delta drives each corner with a different motor mix, so go by the worst).
+- 0.50 leaves a margin under that limit (photo-and-ruler readings are good to 1-2 mm) and still cuts ooze. Bulging corners: try 0.55-0.60; gaps after corners: 0.45.
+- Photos and the first 40 mm attempt (too slow in Cura, effect invisible: the wall speeds themselves must be high) are in [`models/pressure-advance/`](../models/pressure-advance/README.md).
+- After a tuning tower, `RESTART` before the next print: the test leaves PA near 1.0, accel 500 and square corner velocity 1.
+
+## Tower calibration after the clamp change (2026-11-26)
+
+Endstops are now A 161.2497, B 161.6376, C 159.6877, set by paper test: see [tower calibration](tower-calibration.md).
+
 ## What is still open
 
 - Bigger glass (150 mm mirror, [tray adapter 2713277](https://www.thingiverse.com/thing:2713277)) and an accelerometer for input shaping.
 - A printed probe bracket (the nozzle shroud has a rail that looks like the original mount), then re-measure the probe offsets with it fitted.
 - Probe-based edge check with `bed_mesh`, once the glass is firmly seated.
-- Pressure advance and extruder tuning.
+- Obico: confirm "pause on failure" works on a real print.
 
 ## Restoring the stock firmware
 

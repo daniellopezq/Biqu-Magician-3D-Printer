@@ -89,3 +89,11 @@ The same test bar at **105 mm**, a safer step before 110. Same features (numbers
 - **The front-left square is much better** than run 4: solid, with lines fused. The bed is even again on that side.
 - **Back and right squares are good.** The centre square is good, with some strings and a curl on top (travel).
 - Overall the first layer is close to right and consistent across the bed. The remaining issue is **stringing on travel moves**: try retraction 6.5 → 7 mm, or 5 °C cooler (200 °C), and enable "Retract at Layer Change".
+
+## Corrections and later findings (2026-11-26)
+- **Do not use the "Z offset review" steps above.** On this delta, `[probe] z_offset`, `PROBE_CALIBRATE` and `Z_OFFSET_APPLY_PROBE` do not change print height. Use `Z_OFFSET_APPLY_ENDSTOP` after a live adjustment, or edit all three `position_endstop` values (raise = nozzle closer). `SAVE_CONFIG` only after the print has ended.
+- The first 110 mm test (Cura) had **two layers** and fatter first-layer lines; the later PrusaSlicer test had one layer, so they were not like for like. Broken outer arcs do not by themselves show a reach limit, because parts of the 80 mm ring also pulled loose.
+- The 110 bar that printed was placed at **Y -58.5 to +51.5** with the two front corners trimmed to a 58.5 mm radius. At Y -60 the corners of the 20 mm wide bar would be 60.8 mm out, past a centred 120 mm glass.
+- `bar_105.stl`: Y -56 to +49 keeps the front corners at 56.9 mm and the back corners at 50.0 mm.
+- A 108 mm Cura bed lets parts reach 54 mm toward a tower, beyond the 52.5 mm (105 mm circle) default.
+- **Squares run 4:** the v2 clamps were already fitted. The front-left failure was nozzle priming, not height (see [tower calibration](../../docs/tower-calibration.md)). "Retract at Layer Change" is a Cura setting; the squares were sliced with PrusaSlicer.
