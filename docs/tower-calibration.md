@@ -33,4 +33,4 @@ Four 12 mm squares on the calibration spots (0.3 mm first layer, 0.46 mm lines, 
 
 So the first-run failure was the nozzle starting partly empty, not bed height or a moved clamp. The PrusaSlicer files end with 6.5 mm of retraction plus 3 mm in the end G-code (**9.5 mm**), which the next start does not put back. A 5 mm purge never gets filament out; 14 mm leaves only about 4.5 mm. Files with a skirt are covered (the vise small-parts file uses 26.8 mm on two skirt loops). **To do:** for files without a skirt, purge at least 9.5 mm more than the priming needs. The slicer profile has not been changed yet.
 
-After this, the SolderMate small-parts plate printed to completion (1 h 34 min). Its print quality is not recorded here yet.
+After this, the SolderMate small-parts plate printed to completion (1 h 34 min). The base (4 h 12 min, inside the 105 mm circle), screw and repaired slider followed, and the vise is assembled. See [the SolderMate write-up](prints/soldermate-short-vise.md).
